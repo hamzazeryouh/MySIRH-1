@@ -35,7 +35,7 @@ namespace API_MySIRH.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Commenters",
+                name: "Notes",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -46,7 +46,7 @@ namespace API_MySIRH.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Commenters", x => x.Id);
+                    table.PrimaryKey("PK_Notes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -248,9 +248,9 @@ namespace API_MySIRH.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Evaluations_Commenters_CommenterId",
+                        name: "FK_Evaluations_Notes_CommenterId",
                         column: x => x.CommenterId,
-                        principalTable: "Commenters",
+                        principalTable: "Notes",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -343,7 +343,7 @@ namespace API_MySIRH.Migrations
                 name: "Candidats");
 
             migrationBuilder.DropTable(
-                name: "Commenters");
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "Niveaux");

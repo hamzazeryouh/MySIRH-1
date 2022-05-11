@@ -1,13 +1,10 @@
-﻿namespace API_MySIRH.Entities
+﻿namespace API_MySIRH.DTOs
 {
-    public class Entretien : EntityBase
+    public class EntretienDTO: DtoBase
     {
-
         public string? Evaluateur { get; set; }
         public DateTime? DateEntretien { get; set; }
         public int CandidatId { get; set; }
-        public Candidat Candidat { get; set; }
-        public ICollection<Template?> Templates { get; set; }
         public string? Commente { get; set; }
     }
 }

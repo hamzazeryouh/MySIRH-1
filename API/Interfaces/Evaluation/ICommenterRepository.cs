@@ -10,7 +10,7 @@ namespace API_MySIRH.Interfaces
 
     public interface ICommenterRepository
     {
-        Task<IEnumerable<Notes>> GetCommenters();
+        Task<IEnumerable<Notes>> GetNotes();
         Task<Notes> GetCommenter(int id);
         Task UpdateCommenter(int id, Notes Commenter);
         Task<Notes> AddCommenter(Notes Commenter);

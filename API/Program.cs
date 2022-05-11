@@ -12,6 +12,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Azure;
 using Azure.Identity;
+using API_MySIRH.Interfaces.InterfaceServices;
 
 var myAllowSpecificOrigins = "_myAllowSpecificOrigins";
 var builder = WebApplication.CreateBuilder(args);
@@ -76,11 +77,11 @@ builder.Services.AddScoped<ISkillCenterService, SkillCenterService>();
 builder.Services.AddScoped<ITypeContratRepository, TypeContratRepository>();
 builder.Services.AddScoped<ITypeContratService, TypeContratService>();
 builder.Services.AddScoped<ICommenterRepository, CommenterRepository>();
-builder.Services.AddScoped<ICommenterService, CommenterService>();
+builder.Services.AddScoped<INoteservice, Noteservice>();
 builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();
-builder.Services.AddScoped<IEvaluationRepository, EvaluationRepository>();
-builder.Services.AddScoped<IEvaluationService, EvaluationService>();
+builder.Services.AddScoped<IEntretienRepository, EntretienRepository>();
+ builder.Services.AddScoped<IEntretienService, EntretienService>();
 
 //DBContext Config 
 builder.Services.AddDbContext<DataContext>(options =>

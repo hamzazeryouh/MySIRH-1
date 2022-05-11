@@ -9,7 +9,7 @@ namespace API_MySIRH.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations");
 
             migrationBuilder.DropIndex(
@@ -28,7 +28,7 @@ namespace API_MySIRH.Migrations
 
             migrationBuilder.AddColumn<string>(
                 name: "Notes",
-                table: "Commenters",
+                table: "Notes",
                 type: "nvarchar(max)",
                 nullable: true);
 
@@ -38,17 +38,17 @@ namespace API_MySIRH.Migrations
                 column: "CommenterId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Templates_Commenters_CommenterId",
+                name: "FK_Templates_Notes_CommenterId",
                 table: "Templates",
                 column: "CommenterId",
-                principalTable: "Commenters",
+                principalTable: "Notes",
                 principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Templates_Commenters_CommenterId",
+                name: "FK_Templates_Notes_CommenterId",
                 table: "Templates");
 
             migrationBuilder.DropIndex(
@@ -61,7 +61,7 @@ namespace API_MySIRH.Migrations
 
             migrationBuilder.DropColumn(
                 name: "Notes",
-                table: "Commenters");
+                table: "Notes");
 
             migrationBuilder.AddColumn<int>(
                 name: "CommenterId",
@@ -75,10 +75,10 @@ namespace API_MySIRH.Migrations
                 column: "CommenterId");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations",
                 column: "CommenterId",
-                principalTable: "Commenters",
+                principalTable: "Notes",
                 principalColumn: "Id");
         }
     }

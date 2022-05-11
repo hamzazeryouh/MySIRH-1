@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API_MySIRH.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20220510094706_EvulationAddCommnet")]
-    partial class EvulationAddCommnet
+    [Migration("20220511112626_AddEntretien")]
+    partial class AddEntretien
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -156,29 +156,7 @@ namespace API_MySIRH.Migrations
                     b.ToTable("Collaborateurs");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Commenter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Commente")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Notes");
-                });
-
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Entretien", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -191,9 +169,6 @@ namespace API_MySIRH.Migrations
 
                     b.Property<string>("Commente")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("CommenterId")
-                        .HasColumnType("int");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -211,9 +186,7 @@ namespace API_MySIRH.Migrations
 
                     b.HasIndex("CandidatId");
 
-                    b.HasIndex("CommenterId");
-
-                    b.ToTable("Evaluations");
+                    b.ToTable("Entretiens");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.MDM.Poste", b =>
@@ -358,6 +331,36 @@ namespace API_MySIRH.Migrations
                     b.ToTable("Memos");
                 });
 
+            modelBuilder.Entity("API_MySIRH.Entities.Notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Commente")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("TemplateId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("TemplateId");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("API_MySIRH.Entities.Template", b =>
                 {
                     b.Property<int>("Id")
@@ -369,14 +372,11 @@ namespace API_MySIRH.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EvaluationId")
+                    b.Property<int?>("EntretienId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModificationDate")
                         .HasColumnType("datetime2");
-
-                    b.Property<decimal?>("Note")
-                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Technologie")
                         .HasColumnType("nvarchar(max)");
@@ -389,7 +389,7 @@ namespace API_MySIRH.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("EvaluationId");
+                    b.HasIndex("EntretienId");
 
                     b.ToTable("Templates");
                 });
@@ -481,32 +481,35 @@ namespace API_MySIRH.Migrations
                     b.Navigation("Poste");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Entretien", b =>
                 {
                     b.HasOne("API_MySIRH.Entities.Candidat", "Candidat")
-                        .WithMany()
+                        .WithMany("entretiens")
                         .HasForeignKey("CandidatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API_MySIRH.Entities.Commenter", "Commenter")
+                    b.Navigation("Candidat");
+                });
+
+            modelBuilder.Entity("API_MySIRH.Entities.Notes", b =>
+                {
+                    b.HasOne("API_MySIRH.Entities.Template", "Template")
                         .WithMany()
-                        .HasForeignKey("CommenterId")
+                        .HasForeignKey("TemplateId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Candidat");
-
-                    b.Navigation("Commenter");
+                    b.Navigation("Template");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.Template", b =>
                 {
-                    b.HasOne("API_MySIRH.Entities.Evaluation.Evaluation", "Candidat")
+                    b.HasOne("API_MySIRH.Entities.Evaluation.Entretien", "Entretien")
                         .WithMany("Templates")
-                        .HasForeignKey("EvaluationId");
+                        .HasForeignKey("EntretienId");
 
-                    b.Navigation("Candidat");
+                    b.Navigation("Entretien");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.ToDoItem", b =>
@@ -520,7 +523,12 @@ namespace API_MySIRH.Migrations
                     b.Navigation("ToDoList");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Candidat", b =>
+                {
+                    b.Navigation("entretiens");
+                });
+
+            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Entretien", b =>
                 {
                     b.Navigation("Templates");
                 });

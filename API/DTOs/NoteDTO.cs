@@ -1,10 +1,9 @@
-﻿namespace API_MySIRH.Entities
+﻿namespace API_MySIRH.DTOs
 {
-    public class Notes:EntityBase
+    public class NoteDTO : DtoBase
     {
         public string? Commente { get; set; }
         public string? Note { get; set; }
         public int TemplateId { get; set; }
-        public Template? Template { get; set; }
     }
 }

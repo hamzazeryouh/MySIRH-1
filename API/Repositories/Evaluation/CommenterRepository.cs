@@ -21,32 +21,32 @@ namespace API_MySIRH.Repositories
 
         public async Task<Notes> AddCommenter(Notes Commenter)
         {
-            await this._context.Commenters.AddAsync(Commenter);
+            await this._context.Notes.AddAsync(Commenter);
             await this._context.SaveChangesAsync();
             return Commenter;
         }
 
         public async Task<bool> CommenterExists(int id)
         {
-            return await this._context.Commenters.AnyAsync(Commenter => Commenter.Id == id);
+            return await this._context.Notes.AnyAsync(Commenter => Commenter.Id == id);
         }
 
         public async Task DeleteCommenter(int id)
         {
-            var CommenterToDelete = await this._context.Commenters.FindAsync(id);
+            var CommenterToDelete = await this._context.Notes.FindAsync(id);
             if (CommenterToDelete is not null)
-                this._context.Commenters.Remove(CommenterToDelete);
+                this._context.Notes.Remove(CommenterToDelete);
             await this._context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Notes>> GetCommenters()
+        public async Task<IEnumerable<Notes>> GetNotes()
         {
-            return await this._context.Commenters.ToListAsync();
+            return await this._context.Notes.ToListAsync();
         }
 
         public async Task<Notes> GetCommenter(int id)
         {
-            return await _context.Commenters.FindAsync(id);
+            return await _context.Notes.FindAsync(id);
         }
 
         public async Task UpdateCommenter(int id, Notes Commenter)

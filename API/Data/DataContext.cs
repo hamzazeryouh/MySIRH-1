@@ -19,10 +19,11 @@ namespace API_MySIRH.Data
         public DbSet<Collaborateur> Collaborateurs { get; set; } = null!;
         public DbSet<Candidat> Candidats { get; set; } = null!;
         public DbSet<TypeContrat> TypeContrats { get; set; } = null!;
-        public DbSet<Evaluation> Evaluations { get; set; } = null!;
+       // public DbSet<Evaluation> Evaluations { get; set; } = null!;
+        public DbSet<Entretien> Entretiens { get; set; } = null!;
 
         public DbSet<Template> Templates { get; set; } = null!;
-        public DbSet<Notes> Commenters { get; set; } = null!;
+        public DbSet<Notes> Notes { get; set; } = null!;
 
 
 

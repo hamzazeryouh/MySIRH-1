@@ -178,7 +178,7 @@ namespace API_MySIRH.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Commenters");
+                    b.ToTable("Notes");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
