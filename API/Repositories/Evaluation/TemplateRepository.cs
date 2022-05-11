@@ -57,7 +57,7 @@ namespace API_MySIRH.Repositories
 
         public async Task<IEnumerable<Template>> GetTemplatesByEvaluation(int id)
         {
-           return await _context.Templates.Where(t => t.EvaluationId == id).ToListAsync();
+            return null; /* await _context.Templates.Where(t => t.EvaluationId == id).ToListAsync();*/
         }
     }
 }

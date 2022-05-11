@@ -10,10 +10,10 @@ namespace API_MySIRH.Interfaces
 
     public interface ICommenterRepository
     {
-        Task<IEnumerable<Commenter>> GetCommenters();
-        Task<Commenter> GetCommenter(int id);
-        Task UpdateCommenter(int id, Commenter Commenter);
-        Task<Commenter> AddCommenter(Commenter Commenter);
+        Task<IEnumerable<Notes>> GetCommenters();
+        Task<Notes> GetCommenter(int id);
+        Task UpdateCommenter(int id, Notes Commenter);
+        Task<Notes> AddCommenter(Notes Commenter);
         Task DeleteCommenter(int id);
         Task<bool> CommenterExists(int id);
 

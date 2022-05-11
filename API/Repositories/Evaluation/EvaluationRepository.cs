@@ -61,18 +61,19 @@ namespace API_MySIRH.Repositories
 
        //where candidatid == Ev.Id
 
-            var evaluation =await (from Ev in this._context.Evaluations   select (Ev)).FirstOrDefaultAsync();
-            if (evaluation == null) return null;
-            var Template = await (from Te in _context.Templates where Te.EvaluationId == evaluation.Id select new {Te.Id, Te.Note, Te.Them, Te.Title, Te.Technologie }).ToListAsync();
-           // var Comment =await (from Co in _context.Commenters where Co.Id == evaluation.CommenterId select (Co)).FirstOrDefaultAsync();
+           // var evaluation =await (from Ev in this._context.Evaluations   select (Ev)).FirstOrDefaultAsync();
+           // if (evaluation == null) return null;
+           // var Template = await (from Te in _context.Templates where Te.EvaluationId == evaluation.Id select new {Te.Id, Te.Note, Te.Them, Te.Title, Te.Technologie }).ToListAsync();
+           //// var Comment =await (from Co in _context.Commenters where Co.Id == evaluation.CommenterId select (Co)).FirstOrDefaultAsync();
             
-            dynamic Result = new
-            {
-                evaluation,
-                Template,
-            };
+           // dynamic Result = new
+           // {
+           //     evaluation,
+           //     Template,
+           // };
 
-            return Result;
+           // return Result;
+            return null;
         }
 
 

@@ -1,10 +1,17 @@
-﻿using API_MySIRH.Entities.MDM;
+﻿using API_MySIRH.Entities.Evaluation;
+using API_MySIRH.Entities.MDM;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace API_MySIRH.Entities
 {
     public class Candidat : EntityBase
     {
+
+        public Candidat()
+        {
+            entretiens= new HashSet<Entretien>();
+
+        }
         public string? Nom { get; set; } 
         public string? Prenom { get; set; } 
         public DateTime? DateNaissance { get; set; }
@@ -26,6 +33,9 @@ namespace API_MySIRH.Entities
         public string? ImageUrl { get; set; }
 
         public string? CVUrl { get; set; }
+
+
+      public  ICollection<Entretien> entretiens { get; set; } 
 
 
 

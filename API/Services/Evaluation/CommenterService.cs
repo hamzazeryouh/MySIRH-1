@@ -23,7 +23,7 @@ namespace API_MySIRH.Services
 
         public async Task<CommenterDTO> AddCommenter(CommenterDTO Commenter)
         {
-            var returnedCommenter = await this._CommenterRepository.AddCommenter(this._mapper.Map<Commenter>(Commenter));
+            var returnedCommenter = await this._CommenterRepository.AddCommenter(this._mapper.Map<Notes>(Commenter));
             return this._mapper.Map<CommenterDTO>(returnedCommenter);
         }
 
@@ -44,12 +44,12 @@ namespace API_MySIRH.Services
             //return await PagedList<CommenterDTO>.CreateAsync(query, filterParams.pageNumber, filterParams.pageSize);
 
             var result = await _CommenterRepository.GetCommenters();
-            return _mapper.Map<IEnumerable<Commenter>, IEnumerable<CommenterDTO>>(result);
+            return _mapper.Map<IEnumerable<Notes>, IEnumerable<CommenterDTO>>(result);
         }
 
         public async Task UpdateCommenter(int id, CommenterDTO Commenter)
         {
-            await this._CommenterRepository.UpdateCommenter(id, this._mapper.Map<Commenter>(Commenter));
+            await this._CommenterRepository.UpdateCommenter(id, this._mapper.Map<Notes>(Commenter));
         }
 
     }

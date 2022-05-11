@@ -19,7 +19,7 @@ namespace API_MySIRH.Repositories
             this._context = context;
         }
 
-        public async Task<Commenter> AddCommenter(Commenter Commenter)
+        public async Task<Notes> AddCommenter(Notes Commenter)
         {
             await this._context.Commenters.AddAsync(Commenter);
             await this._context.SaveChangesAsync();
@@ -39,17 +39,17 @@ namespace API_MySIRH.Repositories
             await this._context.SaveChangesAsync();
         }
 
-        public async Task<IEnumerable<Commenter>> GetCommenters()
+        public async Task<IEnumerable<Notes>> GetCommenters()
         {
             return await this._context.Commenters.ToListAsync();
         }
 
-        public async Task<Commenter> GetCommenter(int id)
+        public async Task<Notes> GetCommenter(int id)
         {
             return await _context.Commenters.FindAsync(id);
         }
 
-        public async Task UpdateCommenter(int id, Commenter Commenter)
+        public async Task UpdateCommenter(int id, Notes Commenter)
         {
             this._context.Entry(Commenter).State = EntityState.Modified;
             await this._context.SaveChangesAsync();

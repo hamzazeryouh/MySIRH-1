@@ -25,7 +25,7 @@ namespace API_MySIRH.Helpers
             CreateMap<Candidat, CandidatDTO>().ReverseMap();
             CreateMap<Evaluation, EvaluationDTO>().ReverseMap();
             CreateMap<Template, TemplateDTO>().ReverseMap();
-            CreateMap<Commenter, CommenterDTO>().ReverseMap();
+            CreateMap<Notes, CommenterDTO>().ReverseMap();
         }
 
     }

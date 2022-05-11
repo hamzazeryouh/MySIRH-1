@@ -22,7 +22,7 @@ namespace API_MySIRH.Data
         public DbSet<Evaluation> Evaluations { get; set; } = null!;
 
         public DbSet<Template> Templates { get; set; } = null!;
-        public DbSet<Commenter> Commenters { get; set; } = null!;
+        public DbSet<Notes> Commenters { get; set; } = null!;
 
 
 
