@@ -46,5 +46,16 @@ namespace API_MySIRH.Repositories
             this._context.Entry(Entretien).State = EntityState.Modified;
             await this._context.SaveChangesAsync();
         }
+
+
+
+       public async Task<dynamic> GetEntretienByCandidat(int candidatid)
+        {
+            var Entretien = await this._context.Entretiens.ToListAsync();
+            if (Entretien is null) return null;
+             Entretien.Select(async e => e.Templates = _context.Templates.Where(x => x.EntretienId == e.Id).ToList()).ToList();
+            return Entretien;
+
+        }
     }
 }

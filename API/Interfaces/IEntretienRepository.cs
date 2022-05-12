@@ -9,5 +9,6 @@ namespace API_MySIRH.Interfaces
         Task UpdateEntretien(int id, Entretien Entretien);
         Task<Entretien> AddEntretien(Entretien Entretien);
         Task DeleteEntretien(int id);
+        Task<dynamic> GetEntretienByCandidat(int candidatid);
     }
 }

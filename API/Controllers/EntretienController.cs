@@ -63,5 +63,13 @@ namespace API_MySIRH.Controllers
             await this._EntretienService.DeleteEntretien(id);
             return NoContent();
         }
+
+
+        [HttpGet("ByCandidat/{id}")]
+
+        public async Task<IActionResult> GetEvaluationByCandidat(int id)
+        {
+            return Ok(await _EntretienService.GetEntretienByCandidat(id));
+        }
     }
 }

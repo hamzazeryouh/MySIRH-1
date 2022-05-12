@@ -33,6 +33,11 @@ namespace API_MySIRH.Services
             return this._mapper.Map<EntretienDTO>(await this._EntretienRepository.GetEntretien(id));
         }
 
+        public async Task<dynamic> GetEntretienByCandidat(int candidatid)
+        {
+            return await _EntretienRepository.GetEntretienByCandidat(candidatid) ?? null;
+        }
+
         public async Task<IEnumerable<EntretienDTO>> GetEntretiens()
         {
             //var query = this._EntretienRepository.GetEntretiens().ProjectTo<EntretienDTO>(_mapper.ConfigurationProvider).AsNoTracking();
