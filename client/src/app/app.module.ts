@@ -58,6 +58,7 @@ import {
   ToastNotificationConfigModule
 } from '@costlydeveloper/ngx-awesome-popup';
 import { TabsComponent } from './candidats/tabs/tabs.component';
+import { EvaluationCandidatComponent } from './candidats/evaluation-candidat/evaluation-candidat.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -96,7 +97,8 @@ import { TabsComponent } from './candidats/tabs/tabs.component';
       UploadComponent,
       UploadImageComponent,
       SplashScreenComponent,
-      TabsComponent
+      TabsComponent,
+      EvaluationCandidatComponent
       
    ],
    exports:[DropdownComponent,SplashScreenComponent,],

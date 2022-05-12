@@ -11,15 +11,16 @@ import { PosteNiveauService } from 'src/app/services/poste-niveau.service';
 import { Candidat, ICandidat } from 'src/app/Models/Candidat.model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { SideBarComponent } from 'src/app/home/side-bar/side-bar.component';
 import { environment } from 'src/environments/environment';
-import { Evaluation, IEvaluation } from 'src/app/Models/Evaluation';
-import { EvaluationService } from 'src/app/services/evaluation.service';
+
 import { TemplateService } from 'src/app/services/template.service';
 import { commenterService } from 'src/app/services/commenter.service';
-import { ITemplate, Template } from 'src/app/Models/Template';
-import { Commenter, ICommenter } from 'src/app/Models/Commenter';
-import { ThumbnailViewService } from '@syncfusion/ej2-angular-pdfviewer';
+import {  Template } from 'src/app/Models/Template';
+import { Commenter } from 'src/app/Models/Commenter';
+import { Entretien } from 'src/app/Models/Entretien';
+import { EntretienService } from 'src/app/services/entretien.service';
+
+
 
 @Component({
   selector: 'app-add-edit-candidat',
@@ -43,23 +44,23 @@ export class AddEditCandidatComponent implements OnInit {
   iditem: number;
   ImageUrl = '';
   pdfSrc = '';
-  Ev: Evaluation = new Evaluation();
+  Ev: Entretien = new Entretien();
   ListTemplate: any[];
   EvMode = false;
-  ListEvaluation: any[];
-  //begin from  Evaluation
+  ListEntretienn: any[];
+  //begin from  Entretien
   TemplateMode = false;
   Templateid: Number;
-  evaluationModal: Evaluation = new Evaluation();
+  EntretienModal: Entretien = new Entretien();
   templatemodal: Template = new Template();
   CommenteModal: Commenter = new Commenter();
   Evaluateur: '';
-  DateEntretien: '';
+  DateEntretienn: '';
   CandidatId: 0;
   CommenterId: 0;
   TemplateId: 0;
-  EvaluationData: any[];
-  // end evaluation
+  EntretienData: any[];
+  // end Entretien
 
   
 
@@ -72,7 +73,7 @@ export class AddEditCandidatComponent implements OnInit {
     private fb: FormBuilder,
     private service: CandidatService,
     private PosteService: PosteService,
-    private EvaluationService: EvaluationService,
+    private EntretienService: EntretienService,
     private TemplateService: TemplateService,
     private CommenterService: commenterService,
     private PosteNiveauService: PosteNiveauService,
@@ -96,7 +97,7 @@ export class AddEditCandidatComponent implements OnInit {
       this.postes = Object.values(result);
     });
     this.id = Number(this.route.snapshot.paramMap.get('id'));
-    this.GetListEvaluation(Number(this.id));
+    //this.GetListEntretien(Number(this.id));
     this.iditem = Number(this.id);
     if (this.id !== 0) {
       this.mode = true;
@@ -217,31 +218,31 @@ export class AddEditCandidatComponent implements OnInit {
     });
   }
 
-  GetListEvaluation(id: number) {
-    this.EvaluationService.GetEvaluationByCandidat(id).subscribe((data) => {
+ /* GetListEntretien(id: number) {
+    this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
       if (data != null) {
         this.EvMode = true;
       }
       
-      this.evaluationModal.id = data?.evaluation.id;
-      this.evaluationModal.DateEntretien = data?.evaluation?.dateEntretien;
-      this.evaluationModal.Evaluateur = data?.evaluation?.evaluateur;
-      this.evaluationModal.Commente=data?.evaluation?.commente;
+      this.EntretienModal.id = data?.Entretien.id;
+      this.EntretienModal.DateEntretien = data?.Entretien?.dateEntretienn;
+      this.EntretienModal.Evaluateur = data?.Entretien?.evaluateur;
+      this.EntretienModal.Commente=data?.Entretien?.commente;
       this.ListTemplate = data?.template;
       debugger;
       
     });
-  }
+  }*/
 
   addTemplate() {
-    if (this.evaluationModal.id == null) {
+    if (this.EntretienModal.id == null) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Vous devez ajouter Candidate First !',
       });
     }
-    this.templatemodal.EvaluationId = this.evaluationModal.id;
+    this.templatemodal.EntretienId = this.EntretienModal.id;
     this.templatemodal.CommenterId=0;
     this.templatemodal.id=Number( this.Templateid);
     if (this.TemplateMode == true) {
@@ -249,46 +250,46 @@ export class AddEditCandidatComponent implements OnInit {
         this.Templateid.toString(),
         this.templatemodal
       ).subscribe((data) => {});
-      this.GetListEvaluation(Number(this.id));
+    //  this.GetListEntretien(Number(this.id));
     } else {
       this.TemplateService.Add(this.templatemodal).subscribe((data) => {
         this.ListTemplate.push(data);
       });
       this.templatemodal = new Template();
-      this.GetListEvaluation(Number(this.id));
+     // this.GetListEntretien(Number(this.id));
     }
   }
 /*
   AddCommenter() {
     this.CommenterService.Add(this.CommenteModal).subscribe((data) => {
-      this.evaluationModal.CommenterId = Number(data.id);
+      this.EntretienModal.CommenterId = Number(data.id);
       console.log(data.id);
     });
   }
   EditCommenter(){
     this.CommenterService.Update(this.CommenteModal.id.toString(), this.CommenteModal).subscribe((data) => {
-      this.evaluationModal.CommenterId = Number(data.id);
+      this.EntretienModal.CommenterId = Number(data.id);
       console.log(data.id);
     });
   }
 */
-  AddEvaluation() {
+  AddEntretien() {
     if ((this.EvMode == false)) {
-      this.evaluationModal.CandidatId = Number(this.id);
-      this.EvaluationService.Add(this.evaluationModal).subscribe((data) => {
-        this.templatemodal.EvaluationId = data.id;
-        this.evaluationModal = data;
+      this.EntretienModal.CandidatId = Number(this.id);
+      this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
+        this.templatemodal.EntretienId = data.id;
+        this.EntretienModal = data;
         this.templatemodal = new Template();
         this.EvMode = true;
       });
     } else {
-      this.evaluationModal.CandidatId = Number(this.id);
-      this.EvaluationService.Update(
-        this.evaluationModal.id.toString(),
-        this.evaluationModal
+      this.EntretienModal.CandidatId = Number(this.id);
+      this.EntretienService.Update(
+        this.EntretienModal.id.toString(),
+        this.EntretienModal
       ).subscribe((data) => {
-        this.templatemodal.EvaluationId = data.id;
-        this.evaluationModal = data;
+        this.templatemodal.EntretienId = data.id;
+        this.EntretienModal = data;
         this.addTemplate();
         this.EvMode = true;
       });
@@ -298,7 +299,7 @@ export class AddEditCandidatComponent implements OnInit {
   EditTemplate(id: Number) {
     this.TemplateMode = true;
     this.TemplateService.Get(Number(id)).subscribe((data) => {
-      this.templatemodal.note = data.note;
+     
       this.templatemodal.title = data.title;
       this.templatemodal.technologie = data.technologie;
       this.templatemodal.them = data.them;
@@ -310,7 +311,7 @@ export class AddEditCandidatComponent implements OnInit {
     this.TemplateService.Delete(Number(id)).subscribe((data) => {
       // this.ListTemplate=[];
     });
-    this.GetListEvaluation(Number(this.id));
+    //this.GetListEntretien(Number(this.id));
   
   }
 }

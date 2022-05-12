@@ -2,7 +2,7 @@ import { Base, IBase } from "./Base.model";
 
 
         
-export interface IEvaluation extends IBase {
+export interface IEntretien extends IBase {
 
       Evaluateur  :string;
       DateEntretien :Date;
@@ -13,7 +13,7 @@ export interface IEvaluation extends IBase {
       Commente :string;
   
 }
-export class Evaluation extends Base {
+export class Entretien extends Base {
       Evaluateur  :string;
       DateEntretien :Date;
       CandidatId   :number;

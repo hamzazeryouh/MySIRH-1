@@ -16,8 +16,7 @@ export class Template extends Base {
       technologie:string;
       them:string;
       title :string;
-      note :Number;
-      EvaluationId:Number;
+      EntretienId:Number;
       CommenterId:number;
   
 }
