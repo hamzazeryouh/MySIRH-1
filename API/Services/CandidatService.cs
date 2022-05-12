@@ -249,6 +249,7 @@ namespace API_MySIRH.Services
         {
             try
             {
+                if (UniqueName is null) return null;
                 var extension = "." + UniqueName.Split('.')[UniqueName.Split('.').Length - 1];
                 var path = Directory.GetCurrentDirectory() + "\\Resources\\Images\\" + UniqueName;
                 var image= System.IO.File.OpenRead(path);
