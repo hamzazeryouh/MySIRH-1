@@ -57,6 +57,7 @@ import {
   NgxAwesomePopupModule,
   ToastNotificationConfigModule
 } from '@costlydeveloper/ngx-awesome-popup';
+import { TabsComponent } from './candidats/tabs/tabs.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -94,7 +95,8 @@ import {
       PdfViewerComponent,
       UploadComponent,
       UploadImageComponent,
-      SplashScreenComponent
+      SplashScreenComponent,
+      TabsComponent
       
    ],
    exports:[DropdownComponent,SplashScreenComponent,],
