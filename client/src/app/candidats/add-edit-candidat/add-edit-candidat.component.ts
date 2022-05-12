@@ -106,25 +106,28 @@ export class AddEditCandidatComponent implements OnInit {
   }
 
   RefrechData() {
-    this.service.Get(Number(this.id)).subscribe((data) => {
-      this.modal = data;
-      this.ImageUrl = String(this.modal.imageUrl);
-      this.setCandidatInForm(this.modal);
-      this.Nom = this.modal.nom;
-      this.Prenom = this.modal.prenom;
-      this.Civilite = this.modal?.civilite;
-      this.PosteService.Get(this.modal.posteId).subscribe((data) => {
-        let P = Object.values(data);
-        this.Poste = P[0];
+    if(this.mode==true){
+      this.service.Get(Number(this.id)).subscribe((data) => {
+        this.modal = data;
+        this.ImageUrl = String(this.modal.imageUrl);
+        this.setCandidatInForm(this.modal);
+        this.Nom = this.modal.nom;
+        this.Prenom = this.modal.prenom;
+        this.Civilite = this.modal?.civilite;
+        this.PosteService.Get(this.modal.posteId).subscribe((data) => {
+          let P = Object.values(data);
+          this.Poste = P[0];
+        });
+        this.PosteNiveauService.Get(this.modal.posteNiveauId).subscribe(
+          (data) => {
+            let N = Object.values(data);
+            this.Niveau = N[0];
+          }
+        );
+        this.GetImage(this.modal?.imageUrl);
       });
-      this.PosteNiveauService.Get(this.modal.posteNiveauId).subscribe(
-        (data) => {
-          let N = Object.values(data);
-          this.Niveau = N[0];
-        }
-      );
-      this.GetImage(this.modal?.imageUrl);
-    });
+    }
+    
   }
 
 

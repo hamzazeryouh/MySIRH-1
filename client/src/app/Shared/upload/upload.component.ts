@@ -2,6 +2,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 import { HttpEventType, HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { inputs } from '@syncfusion/ej2-angular-pdfviewer/src/pdfviewer/pdfviewer.component';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 @Component({
   selector: 'Kt-upload',
   templateUrl: './upload.component.html',
@@ -14,7 +15,9 @@ export class UploadComponent implements OnInit {
   @Input()id:number;
   static endPoint: string = `${environment.URL}api/Candidat/UploadCV`;
   @Output() public onUploadFinished = new EventEmitter();
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastEvokeService:ToastEvokeService) {
+
+   }
   ngOnInit() {
 
   }
@@ -32,6 +35,8 @@ export class UploadComponent implements OnInit {
           this.progress = Math.round(100 * event.loaded);
         else if (event.type === HttpEventType.Response) {
           this.message = 'Upload success.';
+          this.toastEvokeService.success
+          ('Upload success', 'Upload success').subscribe();
           this.onUploadFinished.emit(event.body);
         }
       });

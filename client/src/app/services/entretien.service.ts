@@ -12,7 +12,7 @@ import { BaseService } from './Base/base.service';
   providedIn: 'root'
 })
 export class EntretienService extends BaseService<Entretien,number> {
-  static endPoint: string = `${environment.URL}api/Entretie`;
+  static endPoint: string = `${environment.URL}api/Entretien`;
   constructor(protected override http: HttpClient) {
     super(http,EntretienService.endPoint);
   }
