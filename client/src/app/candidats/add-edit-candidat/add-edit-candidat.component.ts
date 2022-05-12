@@ -47,7 +47,7 @@ export class AddEditCandidatComponent implements OnInit {
   Ev: Entretien = new Entretien();
   ListTemplate: any[];
   EvMode = false;
-  ListEntretienn: any[];
+  ListEntretien: any[];
   //begin from  Entretien
   TemplateMode = false;
   Templateid: Number;
@@ -97,7 +97,7 @@ export class AddEditCandidatComponent implements OnInit {
       this.postes = Object.values(result);
     });
     this.id = Number(this.route.snapshot.paramMap.get('id'));
-    //this.GetListEntretien(Number(this.id));
+    this.GetListEntretien(Number(this.id));
     this.iditem = Number(this.id);
     if (this.id !== 0) {
       this.mode = true;
@@ -221,23 +221,25 @@ export class AddEditCandidatComponent implements OnInit {
     });
   }
 
- /* GetListEntretien(id: number) {
+  GetListEntretien(id: number) {
     this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
       if (data != null) {
         this.EvMode = true;
       }
+      this.ListEntretien=data;
+      console.log(this.ListEntretien);
       
-      this.EntretienModal.id = data?.Entretien.id;
-      this.EntretienModal.DateEntretien = data?.Entretien?.dateEntretienn;
+     // this.EntretienModal.id = data?.Entretien.id;
+     /* this.EntretienModal.DateEntretien = data?.Entretien?.dateEntretienn;
       this.EntretienModal.Evaluateur = data?.Entretien?.evaluateur;
       this.EntretienModal.Commente=data?.Entretien?.commente;
-      this.ListTemplate = data?.template;
-      debugger;
+      this.ListTemplate = data?.template;*/
       
     });
-  }*/
+  }
 
   addTemplate() {
+    debugger;
     if (this.EntretienModal.id == null) {
       Swal.fire({
         icon: 'error',
@@ -246,20 +248,19 @@ export class AddEditCandidatComponent implements OnInit {
       });
     }
     this.templatemodal.EntretienId = this.EntretienModal.id;
-    this.templatemodal.CommenterId=0;
     this.templatemodal.id=Number( this.Templateid);
     if (this.TemplateMode == true) {
       this.TemplateService.Update(
         this.Templateid.toString(),
         this.templatemodal
       ).subscribe((data) => {});
-    //  this.GetListEntretien(Number(this.id));
+      this.GetListEntretien(Number(this.id));
     } else {
       this.TemplateService.Add(this.templatemodal).subscribe((data) => {
         this.ListTemplate.push(data);
       });
       this.templatemodal = new Template();
-     // this.GetListEntretien(Number(this.id));
+      this.GetListEntretien(Number(this.id));
     }
   }
 /*
@@ -314,7 +315,7 @@ export class AddEditCandidatComponent implements OnInit {
     this.TemplateService.Delete(Number(id)).subscribe((data) => {
       // this.ListTemplate=[];
     });
-    //this.GetListEntretien(Number(this.id));
+    this.GetListEntretien(Number(this.id));
   
   }
 }

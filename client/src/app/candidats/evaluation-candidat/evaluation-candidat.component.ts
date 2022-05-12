@@ -9,7 +9,7 @@ import { Entretien } from 'src/app/Models/Entretien';
 export class EvaluationCandidatComponent implements OnInit {
 
 constructor() { }
-@Input()Entretien:Entretien;
+@Input()Entretien:any;
   ngOnInit(): void {
   }
 

@@ -12,11 +12,14 @@ import { BaseService } from './Base/base.service';
   providedIn: 'root'
 })
 export class EntretienService extends BaseService<Entretien,number> {
+  
   static endPoint: string = `${environment.URL}api/Entretien`;
   constructor(protected override http: HttpClient) {
     super(http,EntretienService.endPoint);
   }
-  GetEntretieByCandidat(id:number): Observable<any>{
+  GetEntretienByCandidat(id:number): Observable<any>{
       return this.http.get<any>(`${this.baseUrl}/ByCandidat/${id}`);
   }
+
+
 }
