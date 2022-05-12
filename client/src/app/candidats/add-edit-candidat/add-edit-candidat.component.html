@@ -111,7 +111,7 @@
         <ul ngbNav #nav="ngbNav" class="nav-tabs">
           <li ngbNavItem>
             <!--li info-->
-            <a class="h6 mx-1 px-1" ngbNavLink>Information candidat</a>
+            <a class="h6 mx-1 p-1" ngbNavLink>Information candidat</a>
             <ng-template ngbNavContent>
               <hr />
               <form
@@ -165,7 +165,7 @@
                         type="text"
                         id="nom"
                         name="nom"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         [ngClass]="{ 'is-invalid': submitted && error['nom'].errors?.['required'] }"
                       />
@@ -194,7 +194,7 @@
                         [formControlName]="'prenom'"
                         type="text"
                         id="prenom"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         autocomplete="off"
                         required
@@ -225,7 +225,7 @@
                         [formControlName]="'dateNaissance'"
                         type="date"
                         id="dateNaissance"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         [ngClass]="{
                           'is-invalid':
@@ -262,7 +262,7 @@
                         [formControlName]="'telephone'"
                         type="tel"
                         id="telephone"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         required
                       />
@@ -289,7 +289,7 @@
                         [formControlName]="'email'"
                         type="email"
                         id="email"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         required
                       />
@@ -321,7 +321,7 @@
                         [formControlName]="'datePremiereExperience'"
                         type="date"
                         id="datePremiereExperience"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -352,7 +352,7 @@
                         [formControlName]="'emploiEncore'"
                         type="text"
                         id="emploiEncore"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                       />
                       <div
@@ -383,7 +383,7 @@
                         [formControlName]="'salaireActuel'"
                         type="number"
                         id="salaireActuel"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -414,7 +414,7 @@
                         [formControlName]="'propositionSalariale'"
                         type="number"
                         id="propositionSalariale"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -445,7 +445,7 @@
                         [formControlName]="'residenceActuelle'"
                         type="text"
                         id="residenceActuelle"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -549,7 +549,7 @@
                   >
                   <textarea
                     [formControlName]="'commentaire'"
-                    class="form-control"
+                    class=" form-control form-control-sm"
                     id="commentaire"
                     rows="4"
                   ></textarea>
@@ -559,18 +559,6 @@
                 Place order
               </button-->
               </form>
-            </ng-template>
-          </li>
-          <li ngbNavItem>
-            <!--li cv-->
-            <a ngbNavLink class="h6 mx-1 p-1">Cv candidat</a>
-            <ng-template ngbNavContent>
-              <div class="h-100 bg-white">
-  
-                <Kt-upload [id]="iditem" ></Kt-upload>
-                <kt-pdf-viewer src="{{ endPoint }}/GetFile/{{ modal.cvUrl }}">
-                </kt-pdf-viewer>
-              </div>
             </ng-template>
           </li>
           <li ngbNavItem>
@@ -588,7 +576,7 @@
                       <input
                         [(ngModel)]="EntretienModal.Evaluateur"
                         type="text"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         required
                         name="EntretienModal.Evaluateur"
@@ -601,7 +589,7 @@
                       <label class="form-label">Date de entretien :</label>
                       <input
                         [(ngModel)]="EntretienModal.DateEntretien"
-                        class="form-control"
+                        class=" form-control form-control-sm"
                         autocomplete="off"
                         required
                         type="date"
@@ -635,7 +623,7 @@
                       <input
                         readonly
                         type="text"
-                        class="form-control my-1"
+                        class=" form-control form-control-sm my-1"
                         autocomplete="off"
                         value="{{ item.technologie }}"
                         required
@@ -649,7 +637,7 @@
                       <input
                         value=""
                         type="text"
-                        class="form-control my-1"
+                        class=" form-control form-control-sm my-1"
                         required
                         readonly
                         value="{{ item.them }}"
@@ -662,7 +650,7 @@
                       <label *ngIf="index==0" class="form-label" for="prenom">Titre :</label>
                       <input
                         type="text"
-                        class="form-control my-1"
+                        class=" form-control form-control-sm my-1"
                         autocomplete="off"
                         required
                         value="{{ item.title }}"
@@ -676,7 +664,7 @@
                       <label *ngIf="index==0" class="form-label" for="Note">Note :</label>
                       <input
                         type="number"
-                        class="form-control my-1"
+                        class=" form-control form-control-sm my-1"
                         autocomplete="off"
                         required
                         readonly
@@ -751,7 +739,7 @@
                     >Commentaire</label
                   >
                   <textarea
-                    class="form-control"
+                    class=" form-control form-control-sm"
                     id="EntretienModal.Commente"
                     name="EntretienModal.Commente"
                     rows="4"
@@ -770,6 +758,19 @@
                   </div>
                
               </form>
+            </ng-template>
+          </li>
+
+          <li ngbNavItem>
+            <!--li cv-->
+            <a ngbNavLink class="h6 mx-1 p-1">Cv candidat</a>
+            <ng-template ngbNavContent>
+              <div class="h-100 bg-white">
+  
+                <Kt-upload [id]="iditem" ></Kt-upload>
+                <kt-pdf-viewer src="{{ endPoint }}/GetFile/{{ modal.cvUrl }}">
+                </kt-pdf-viewer>
+              </div>
             </ng-template>
           </li>
         </ul>
@@ -808,7 +809,7 @@
                     <input
                       [(ngModel)]="templatemodal.technologie"
                       type="text"
-                      class="form-control"
+                      class=" form-control form-control-sm "
                       autocomplete="off"
                       required
                       name="templatemodal.technologie"
@@ -824,7 +825,7 @@
                     <input
                       [(ngModel)]="templatemodal.them"
                       type="text"
-                      class="form-control"
+                      class=" form-control form-control-sm"
                       autocomplete="off"
                       required
                       name="templatemodal.them"
@@ -841,7 +842,7 @@
                     <input
                       [(ngModel)]="templatemodal.title"
                       type="text"
-                      class="form-control"
+                      class=" form-control form-control-sm"
                       autocomplete="off"
                       required
                       name="templatemodal.title"
