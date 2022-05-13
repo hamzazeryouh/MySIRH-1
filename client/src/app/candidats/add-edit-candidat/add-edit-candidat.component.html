@@ -601,23 +601,18 @@
 
                       <div class="col">
                         <button
-                          *ngIf="
-                            EntretienModal != null ||
-                            EntretienModal != undefined
-                          "
                           style="outline: none; border: none; margin-top: 32px"
                           data-bs-toggle="modal"
                           data-bs-target="#addnewTemplateModal"
                           aria-label="add"
                           class="btn btn-primary"
+                         
                         >
                           <i class="bi bi-plus-circle"></i>
                           Ajoute template
                         </button>
                       </div>
                     </div>
-                    <hr />
-
                     <div
                       *ngFor="let item of e.templates; let index = index"
                       class="row"
@@ -680,28 +675,14 @@
                         <div class="form-outline mx">
                           <label
                             *ngIf="index == 0"
-                            class="form-label"
+                            class="form-label text-center"
                             for="Note"
                             >Note :</label
                           >
-
                           <form
                           [formGroup]="formNote">
-
-                          <ngx-star-rating class="w-20" formControlName="rating" [id]="'rating'"></ngx-star-rating>
-                          <div>Rating: {{form.value.rating}}</div>
-                      
+                          <ngx-star-rating class="stare" [(ngModel)]="NoteModal.Note" formControlName="rating" [id]="'rating'"></ngx-star-rating>
                         </form>
-                           
-                          
-                          <button
-                            data-bs-toggle="modal"
-                            data-bs-target="#addnewCommenterModal"
-                            aria-label="add"
-                            class="btn  btn-info "
-                          >
-                            <i class="bi bi-plus-circle"></i>
-                          </button>
                         </div>
                       </div>
                      
@@ -715,6 +696,16 @@
                           >
                           </label>
                           <div class="container justify-content-end">
+
+                            <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#addnewCommenterModal"
+                            aria-label="add"
+                            data-toggle="tooltip" data-placement="top" title="Ajouter un commentaire dans la note"
+                            class="btn btn-sm btn-info"
+                          >
+                            <i class="bi bi-plus-circle"></i>
+                          </button>
                             <button
                               data-bs-toggle="modal"
                               (click)="EditTemplate(item.id)"
@@ -781,21 +772,23 @@
                       ></textarea>
                     </div>
                     <div
-                      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom"
+                      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom"
                     >
                       <div></div>
-                      <div>
+                      <div *ngIf="">
+
+
                         <button
                           type="button"
                           (click)="AddEntretien()"
-                          class="btn btn-primary btn-sm ml-2"
+                          class="btn btn-primary btn-sm"
                         >
                           valider
                         </button>
                         <button
                           type="button"
                           class="btn btn-secondary btn-sm"
-                          (click)="back()"
+                          (click)="back()" 
                         >
                           Annuler
                         </button>
