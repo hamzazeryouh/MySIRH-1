@@ -12,13 +12,13 @@ import { Candidat, ICandidat } from 'src/app/Models/Candidat.model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
-
 import { TemplateService } from 'src/app/services/template.service';
-import { commenterService } from 'src/app/services/commenter.service';
+
 import {  Template } from 'src/app/Models/Template';
-import { Commenter } from 'src/app/Models/Commenter';
 import { Entretien } from 'src/app/Models/Entretien';
 import { EntretienService } from 'src/app/services/entretien.service';
+import { Notes } from 'src/app/Models/notes';
+import { notesService } from 'src/app/services/notes.service';
 
 
 
@@ -29,6 +29,7 @@ import { EntretienService } from 'src/app/services/entretien.service';
 })
 export class AddEditCandidatComponent implements OnInit {
   modal: Candidat = new Candidat();
+
   Civilite?: string | null;
   Nom: string | null;
   Prenom!: string | null;
@@ -36,6 +37,7 @@ export class AddEditCandidatComponent implements OnInit {
   Niveau!: any;
 
   form!: FormGroup;
+  formNote: FormGroup;
   mode = false;
   submitted = false;
   postes!: any[];
@@ -53,13 +55,16 @@ export class AddEditCandidatComponent implements OnInit {
   Templateid: Number;
   EntretienModal: Entretien = new Entretien();
   templatemodal: Template = new Template();
-  CommenteModal: Commenter = new Commenter();
+  NoteModal: Notes = new Notes();
   Evaluateur: '';
   DateEntretienn: '';
   CandidatId: 0;
-  CommenterId: 0;
+  NoterId: 0;
   TemplateId: 0;
   EntretienData: any[];
+
+  Notes:any;
+  
   // end Entretien
 
   
@@ -68,6 +73,7 @@ export class AddEditCandidatComponent implements OnInit {
 
   //end template model
   endPoint: string = `${environment.URL}api/Candidat`;
+  rating3: number;
   constructor(
     private location: Location,
     private fb: FormBuilder,
@@ -75,13 +81,23 @@ export class AddEditCandidatComponent implements OnInit {
     private PosteService: PosteService,
     private EntretienService: EntretienService,
     private TemplateService: TemplateService,
-    private CommenterService: commenterService,
+    private NotesService: notesService,
     private PosteNiveauService: PosteNiveauService,
     private route: ActivatedRoute,
     private Router: Router
-  ) {}
+  ) {
+
+
+    this.rating3 = 0;
+    this.formNote = this.fb.group({
+      rating: ['', Validators.required],
+    })
+  }
   get error() {
     return this.form.controls;
+
+
+    
   }
 
   ngOnInit(): void {
@@ -157,6 +173,25 @@ export class AddEditCandidatComponent implements OnInit {
     });
   }
 
+  initForm() {
+    this.form = this.fb.group({
+      nom: [null, [Validators.required]],
+      prenom: [null, [Validators.required]],
+      email: [null, [Validators.pattern(Appsettings.regexEmail)]],
+      telephone: [null, [Validators.pattern(Appsettings.regexPhone)]],
+      civilite: [null, [Validators.required]],
+      datePremiereExperience: [null, [Validators.required]],
+      dateNaissance: [null, [Validators.required]],
+      salaireActuel: [null],
+      propositionSalariale: [null],
+      residenceActuelle: [null],
+      emploiEncore: [null],
+      posteId: [null, [Validators.required]],
+      posteNiveauId: [null, [Validators.required]],
+      commentaire: [null],
+    });
+  }
+
   // Process checkout data here
 
   save() {
@@ -202,24 +237,7 @@ export class AddEditCandidatComponent implements OnInit {
       this.RefrechData();
     }
   }
-  initForm() {
-    this.form = this.fb.group({
-      nom: [null, [Validators.required]],
-      prenom: [null, [Validators.required]],
-      email: [null, [Validators.pattern(Appsettings.regexEmail)]],
-      telephone: [null, [Validators.pattern(Appsettings.regexPhone)]],
-      civilite: [null, [Validators.required]],
-      datePremiereExperience: [null, [Validators.required]],
-      dateNaissance: [null, [Validators.required]],
-      salaireActuel: [null],
-      propositionSalariale: [null],
-      residenceActuelle: [null],
-      emploiEncore: [null],
-      posteId: [null, [Validators.required]],
-      posteNiveauId: [null, [Validators.required]],
-      commentaire: [null],
-    });
-  }
+ 
 
   GetListEntretien(id: number) {
     this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
@@ -232,7 +250,7 @@ export class AddEditCandidatComponent implements OnInit {
      // this.EntretienModal.id = data?.Entretien.id;
      /* this.EntretienModal.DateEntretien = data?.Entretien?.dateEntretienn;
       this.EntretienModal.Evaluateur = data?.Entretien?.evaluateur;
-      this.EntretienModal.Commente=data?.Entretien?.commente;
+      this.EntretienModal.Note=data?.Entretien?.Note;
       this.ListTemplate = data?.template;*/
       
     });
@@ -264,15 +282,15 @@ export class AddEditCandidatComponent implements OnInit {
     }
   }
 /*
-  AddCommenter() {
-    this.CommenterService.Add(this.CommenteModal).subscribe((data) => {
-      this.EntretienModal.CommenterId = Number(data.id);
+  AddNoter() {
+    this.NoterService.Add(this.NoteModal).subscribe((data) => {
+      this.EntretienModal.NoterId = Number(data.id);
       console.log(data.id);
     });
   }
-  EditCommenter(){
-    this.CommenterService.Update(this.CommenteModal.id.toString(), this.CommenteModal).subscribe((data) => {
-      this.EntretienModal.CommenterId = Number(data.id);
+  EditNoter(){
+    this.NoterService.Update(this.NoteModal.id.toString(), this.NoteModal).subscribe((data) => {
+      this.EntretienModal.NoterId = Number(data.id);
       console.log(data.id);
     });
   }
@@ -317,5 +335,20 @@ export class AddEditCandidatComponent implements OnInit {
     });
     this.GetListEntretien(Number(this.id));
   
+  }
+
+  AjouteNotes(TemplateId:Number){
+    this.NoteModal.TemplateId=Number(TemplateId);
+    this.NotesService.Add(this.NoteModal).subscribe(data=>{
+    });
+    this.NoteModal=new Notes();
+  }
+
+  editNotes(NoteId:Number){
+    this.NoteModal.Note
+    //this.NoteModal.TemplateId=Number(TemplateId);
+    this.NotesService.Add(this.NoteModal).subscribe(data=>{
+    });
+    this.NoteModal=new Notes();
   }
 }

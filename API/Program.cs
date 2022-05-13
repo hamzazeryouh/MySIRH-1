@@ -76,7 +76,7 @@ builder.Services.AddScoped<ISkillCenterService, SkillCenterService>();
 // Add TypeContrat Services and Repository inject
 builder.Services.AddScoped<ITypeContratRepository, TypeContratRepository>();
 builder.Services.AddScoped<ITypeContratService, TypeContratService>();
-builder.Services.AddScoped<ICommenterRepository, CommenterRepository>();
+builder.Services.AddScoped<INotesRepository, NoteRepository>();
 builder.Services.AddScoped<INoteservice, Noteservice>();
 builder.Services.AddScoped<ITemplateRepository, TemplateRepository>();
 builder.Services.AddScoped<ITemplateService, TemplateService>();

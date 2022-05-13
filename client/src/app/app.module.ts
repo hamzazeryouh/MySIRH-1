@@ -59,6 +59,9 @@ import {
 } from '@costlydeveloper/ngx-awesome-popup';
 import { TabsComponent } from './candidats/tabs/tabs.component';
 import { EvaluationCandidatComponent } from './candidats/evaluation-candidat/evaluation-candidat.component';
+import { AngularEditorModule } from '@kolkov/angular-editor';
+import { StarRatingModule } from 'angular-star-rating';
+import { NgxStarRatingModule } from 'ngx-star-rating';
 @NgModule({
   declarations: [
     AppComponent,
@@ -104,6 +107,7 @@ import { EvaluationCandidatComponent } from './candidats/evaluation-candidat/eva
    exports:[DropdownComponent,SplashScreenComponent,],
   imports: [
     CommonModule,
+    AngularEditorModule ,
     BrowserModule,
     AppRoutingModule,
     RouterModule.forRoot(appRoutes),
@@ -116,7 +120,9 @@ import { EvaluationCandidatComponent } from './candidats/evaluation-candidat/eva
     PdfViewerModule,
     JwPaginationModule,
     NgxAwesomePopupModule.forRoot(), // Essential, mandatory main module.
-        ToastNotificationConfigModule.forRoot() 
+        ToastNotificationConfigModule.forRoot() ,
+        StarRatingModule.forRoot(),
+        NgxStarRatingModule,
     
   ],
 

@@ -21,7 +21,7 @@
   <div class="row">
     <div class="col-3">
       <div class="container d-flex justify-content-center h-100 bg-white">
-        <div class="d-flex flex-column ">
+        <div class="d-flex flex-column">
           <div class="">
             <P class="pt-3 text-center h2" *ngIf="Civilite == null"
               >{{ Nom }} {{ Prenom }}</P
@@ -111,7 +111,7 @@
         <ul ngbNav #nav="ngbNav" class="nav-tabs">
           <li ngbNavItem>
             <!--li info-->
-            <a class="h6 mx-1 p-1" ngbNavLink>Information candidat</a>
+            <a class="h6 mx-1 p-2" ngbNavLink>Information candidat</a>
             <ng-template ngbNavContent>
               <hr />
               <form
@@ -165,7 +165,7 @@
                         type="text"
                         id="nom"
                         name="nom"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                         [ngClass]="{ 'is-invalid': submitted && error['nom'].errors?.['required'] }"
                       />
@@ -194,7 +194,7 @@
                         [formControlName]="'prenom'"
                         type="text"
                         id="prenom"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                         autocomplete="off"
                         required
@@ -225,7 +225,7 @@
                         [formControlName]="'dateNaissance'"
                         type="date"
                         id="dateNaissance"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                         [ngClass]="{
                           'is-invalid':
@@ -262,7 +262,7 @@
                         [formControlName]="'telephone'"
                         type="tel"
                         id="telephone"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                         required
                       />
@@ -289,7 +289,7 @@
                         [formControlName]="'email'"
                         type="email"
                         id="email"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                         required
                       />
@@ -321,7 +321,7 @@
                         [formControlName]="'datePremiereExperience'"
                         type="date"
                         id="datePremiereExperience"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -352,7 +352,7 @@
                         [formControlName]="'emploiEncore'"
                         type="text"
                         id="emploiEncore"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                       />
                       <div
@@ -383,7 +383,7 @@
                         [formControlName]="'salaireActuel'"
                         type="number"
                         id="salaireActuel"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -414,7 +414,7 @@
                         [formControlName]="'propositionSalariale'"
                         type="number"
                         id="propositionSalariale"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -445,7 +445,7 @@
                         [formControlName]="'residenceActuelle'"
                         type="text"
                         id="residenceActuelle"
-                        class=" form-control form-control-sm"
+                        class="form-control form-control-sm"
                         autocomplete="off"
                       />
 
@@ -549,7 +549,7 @@
                   >
                   <textarea
                     [formControlName]="'commentaire'"
-                    class=" form-control form-control-sm"
+                    class="form-control form-control-sm"
                     id="commentaire"
                     rows="4"
                   ></textarea>
@@ -563,218 +563,256 @@
           </li>
           <li ngbNavItem>
             <!--li Entretien-->
-            <a ngbNavLink class="h6 mx-1 p-1">Entretien candidat</a>
+            <a ngbNavLink class="h6 mx-1 p-2">Entretien candidat</a>
             <ng-template ngbNavContent>
-             
-              <div class="card m-2"*ngFor="let e of ListEntretien " >
+              <div class="card m-2" *ngFor="let e of ListEntretien">
                 <div class="card-body">
-              <form class="p-2 needs-validation" autocomplete="off">
-                <div class="row">
-                  <div class="col">
-                    <div class="form-outline mx">
-                      <label class="form-label" for="prenom"
-                        >Evaluateur :</label
-                      >
-                      <input
-                        type="text"
-                        class=" form-control form-control-sm"
-                        autocomplete="off"
-                        required
-                        name="e.evaluateur"
-                        
-                        value="{{e.evaluateur}}"
-                      />
-                    </div>
-                  </div>
+                  <form class="p-2 needs-validation" autocomplete="off">
+                    <div class="row">
+                      <div class="col">
+                        <div class="form-outline mx">
+                          <label class="form-label" for="prenom"
+                            >Evaluateur :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            autocomplete="off"
+                            required
+                            name="e.evaluateur"
+                            value="{{ e.evaluateur }}"
+                          />
+                        </div>
+                      </div>
 
-                  <div class="col">
-                    <div class="form-outline">
-                      <label class="form-label">Date de entretien :</label>
-                      <input
-                      
-                        class=" form-control form-control-sm"
-                        autocomplete="off"
-                        required
-                        type="date"
-                       value="{{e.dateEntretien}}"    
-                        name="e.dateEntretien"
-                      />
-                    </div>
-                  </div>
+                      <div class="col">
+                        <div class="form-outline">
+                          <label class="form-label">Date de entretien :</label>
+                          <input
+                            class="form-control form-control-sm"
+                            autocomplete="off"
+                            required
+                            type="date"
+                            value="{{ e.dateEntretien }}"
+                            name="e.dateEntretien"
+                          />
+                        </div>
+                      </div>
 
-                  <div class="col" >
+                      <div class="col">
                         <button
-                        *ngIf="EntretienModal!=null||EntretienModal!=undefined "
-                          style="outline: none; border: none ;margin-top: 32px;"
+                          *ngIf="
+                            EntretienModal != null ||
+                            EntretienModal != undefined
+                          "
+                          style="outline: none; border: none; margin-top: 32px"
                           data-bs-toggle="modal"
                           data-bs-target="#addnewTemplateModal"
                           aria-label="add"
                           class="btn btn-primary"
                         >
                           <i class="bi bi-plus-circle"></i>
-                        Ajoute template
-                        </button>
-
-                  </div>
-                </div>
-                <hr />
-
-                <div *ngFor="let item of e.templates;let index = index; " class="row">
-                  <div class="col">
-                    <div class="form-outline mx">
-                      <label *ngIf="index==0" class="form-label" for="prenom"
-                        >Technologie :</label
-                      >
-                      <input
-                        readonly
-                        type="text"
-                        class=" form-control form-control-sm my-1"
-                        autocomplete="off"
-                        value="{{ item.technologie }}"
-                        required
-                        
-                      />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline mx">
-                      <label *ngIf="index==0" class="form-label" for="prenom">theme :</label>
-                      <input
-                        value=""
-                        type="text"
-                        class=" form-control form-control-sm my-1"
-                        required
-                        readonly
-                        value="{{ item.them }}"
-                       
-                      />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline mx">
-                      <label *ngIf="index==0" class="form-label" for="prenom">Titre :</label>
-                      <input
-                        type="text"
-                        class=" form-control form-control-sm my-1"
-                        autocomplete="off"
-                        required
-                        value="{{ item.title }}"
-                        readonly
-                       
-                      />
-                    </div>
-                  </div>
-                  <div class="col">
-                    <div class="form-outline mx">
-                      <label *ngIf="index==0" class="form-label" for="Note">Note :</label>
-                      <input
-                        type="number"
-                        class=" form-control form-control-sm my-1"
-                        autocomplete="off"
-                        required
-                        readonly
-                       
-                      />
-                    </div>
-                  </div>
-
-                  <div class="col mt-3">
-                   
-                    <div class="form-outline mx">
-                      <label  class="form-label" *ngIf="index==0" for="Note"> </label>
-                      <div class="container justify-content-end">
-                        <button
-                        data-bs-toggle="modal"
-                        (click)="EditTemplate(item.id)"
-                        data-bs-target="#addnewTemplateModal"
-                        aria-label="add"
-                          class="btn btn-sm btn-primary me-2 mb-1"
-                          aria-label="edit"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-pencil-square"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                            />
-                            <path
-                              fill-rule="evenodd"
-                              d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                            />
-                          </svg>
-                        </button>
-                        <button
-                        (click)="deleteTemplate(item.id)"
-                          class="btn btn-sm btn-danger me-2 mb-1"
-                          data-bs-toggle="modal"
-                          data-bs-target="#deleteModal"
-                          aria-label="delete"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="16"
-                            height="16"
-                            fill="currentColor"
-                            class="bi bi-trash"
-                            viewBox="0 0 16 16"
-                          >
-                            <path
-                              d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                            />
-                            <path
-                              fill-rule="evenodd"
-                              d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                            />
-                          </svg>
+                          Ajoute template
                         </button>
                       </div>
                     </div>
-                       
-                        
+                    <hr />
+
+                    <div
+                      *ngFor="let item of e.templates; let index = index"
+                      class="row"
+                    >
+                      <div class="col">
+                        <div class="form-outline mx">
+                          <label
+                            *ngIf="index == 0"
+                            class="form-label"
+                            for="prenom"
+                            >Technologie :</label
+                          >
+                          <input
+                            readonly
+                            type="text"
+                            class="form-control form-control-sm my-1"
+                            autocomplete="off"
+                            value="{{ item.technologie }}"
+                            required
+                          />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-outline mx">
+                          <label
+                            *ngIf="index == 0"
+                            class="form-label"
+                            for="prenom"
+                            >theme :</label
+                          >
+                          <input
+                            value=""
+                            type="text"
+                            class="form-control form-control-sm my-1"
+                            required
+                            readonly
+                            value="{{ item.them }}"
+                          />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-outline mx">
+                          <label
+                            *ngIf="index == 0"
+                            class="form-label"
+                            for="prenom"
+                            >Titre :</label
+                          >
+                          <input
+                            type="text"
+                            class="form-control form-control-sm my-1"
+                            autocomplete="off"
+                            required
+                            value="{{ item.title }}"
+                            readonly
+                          />
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="form-outline mx">
+                          <label
+                            *ngIf="index == 0"
+                            class="form-label"
+                            for="Note"
+                            >Note :</label
+                          >
+
+                          <form
+                          [formGroup]="formNote">
+
+                          <ngx-star-rating class="w-20" formControlName="rating" [id]="'rating'"></ngx-star-rating>
+                          <div>Rating: {{form.value.rating}}</div>
+                      
+                        </form>
+                           
+                          
+                          <button
+                            data-bs-toggle="modal"
+                            data-bs-target="#addnewCommenterModal"
+                            aria-label="add"
+                            class="btn  btn-info "
+                          >
+                            <i class="bi bi-plus-circle"></i>
+                          </button>
+                        </div>
+                      </div>
+                     
+
+                      <div class="col mt-3">
+                        <div class="form-outline mx">
+                          <label
+                            class="form-label"
+                            *ngIf="index == 0"
+                            for="Note"
+                          >
+                          </label>
+                          <div class="container justify-content-end">
+                            <button
+                              data-bs-toggle="modal"
+                              (click)="EditTemplate(item.id)"
+                              data-bs-target="#addnewTemplateModal"
+                              aria-label="add"
+                              class="btn btn-sm btn-primary me-2 mb-1"
+                              aria-label="edit"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-pencil-square"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
+                                />
+                              </svg>
+                            </button>
+                            <button
+                              (click)="deleteTemplate(item.id)"
+                              class="btn btn-sm btn-danger me-2 mb-1"
+                              data-bs-toggle="modal"
+                              data-bs-target="#deleteModal"
+                              aria-label="delete"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="16"
+                                height="16"
+                                fill="currentColor"
+                                class="bi bi-trash"
+                                viewBox="0 0 16 16"
+                              >
+                                <path
+                                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
+                                />
+                                <path
+                                  fill-rule="evenodd"
+                                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                <div class="form-outline mb-4">
-                  <label class="form-label" for="CommenterId"
-                    >Commentaire</label
-                  >
-                  <textarea
-                    class=" form-control form-control-sm"
-                    id="EntretienModal.Commente"
-                    name="e.commente"
-                    rows="4"
-                    [value]="e.commente"
-                  ></textarea>
-                </div>
-                  <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
-                   <div></div>
-                   <div>
-                    <button type="button" (click)="AddEntretien()" class="btn btn-primary btn-sm ml-2">valider</button>
-                    <button type="button" class="btn btn-secondary  btn-sm" (click)="back()">
-                      Annuler
-                    </button>
-                   </div>
-                    
-                  </div>
-               
-              </form>
+                    <div class="form-outline mb-4">
+                      <label class="form-label" for="CommenterId"
+                        >Commentaire</label
+                      >
+                      <textarea
+                        class="form-control form-control-sm"
+                        id="EntretienModal.Commente"
+                        name="e.commente"
+                        rows="4"
+                        value="{{e.commente}}"
+                      ></textarea>
+                    </div>
+                    <div
+                      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom"
+                    >
+                      <div></div>
+                      <div>
+                        <button
+                          type="button"
+                          (click)="AddEntretien()"
+                          class="btn btn-primary btn-sm ml-2"
+                        >
+                          valider
+                        </button>
+                        <button
+                          type="button"
+                          class="btn btn-secondary btn-sm"
+                          (click)="back()"
+                        >
+                          Annuler
+                        </button>
+                      </div>
+                    </div>
+                  </form>
                 </div>
               </div>
-
             </ng-template>
           </li>
 
           <li ngbNavItem>
             <!--li cv-->
-            <a ngbNavLink class="h6 mx-1 p-1">Cv candidat</a>
+            <a ngbNavLink class="h6 mx-1 p-2">Cv candidat</a>
             <ng-template ngbNavContent>
               <div class="h-100 bg-white">
-  
-                <Kt-upload [id]="iditem" ></Kt-upload>
+                <Kt-upload [id]="iditem"></Kt-upload>
                 <kt-pdf-viewer src="{{ endPoint }}/GetFile/{{ modal.cvUrl }}">
                 </kt-pdf-viewer>
               </div>
@@ -816,7 +854,7 @@
                     <input
                       [(ngModel)]="templatemodal.technologie"
                       type="text"
-                      class=" form-control form-control-sm "
+                      class="form-control form-control-sm"
                       autocomplete="off"
                       required
                       name="templatemodal.technologie"
@@ -832,7 +870,7 @@
                     <input
                       [(ngModel)]="templatemodal.them"
                       type="text"
-                      class=" form-control form-control-sm"
+                      class="form-control form-control-sm"
                       autocomplete="off"
                       required
                       name="templatemodal.them"
@@ -849,7 +887,7 @@
                     <input
                       [(ngModel)]="templatemodal.title"
                       type="text"
-                      class=" form-control form-control-sm"
+                      class="form-control form-control-sm"
                       autocomplete="off"
                       required
                       name="templatemodal.title"
@@ -857,6 +895,62 @@
                         'is-invalid': submitted && error['Titre'].errors
                       }"
                     />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--end modal body -->
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+
+          <button (click)="addTemplate()" type="button" class="btn btn-primary">
+            valider
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--end modal add new Template -->
+
+  <!-- begin Modal Add new Template -->
+  <div
+    class="modal fade"
+    id="addnewCommenterModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">ajouter commentaire</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <!--begin modal body -->
+          <div>
+            <div class="col">
+              <div class="form-outline mx">
+                <div class="col">
+                  <div class="form-outline mx">
+                    <label class="form-label" for="prenom">Commenter :</label>
+                    <angular-editor
+                      [placeholder]="'Enter text here...'"
+                      [(ngModel)]="NoteModal.Commente"
+                    ></angular-editor>
                   </div>
                 </div>
               </div>

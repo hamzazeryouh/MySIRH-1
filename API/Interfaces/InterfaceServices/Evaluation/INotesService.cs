@@ -10,10 +10,10 @@ namespace API_MySIRH.Interfaces
     public interface INoteservice
     {
         Task<IEnumerable<NoteDTO>> GetNotes();
-        Task<NoteDTO> GetCommenter(int id);
-        Task UpdateCommenter(int id, NoteDTO Commenter);
-        Task<NoteDTO> AddCommenter(NoteDTO Commenter);
-        Task DeleteCommenter(int id);
+        Task<NoteDTO> GetNote(int id);
+        Task UpdateNote(int id, NoteDTO Note);
+        Task<NoteDTO> AddNote(NoteDTO Note);
+        Task DeleteNote(int id);
 
     }
 }

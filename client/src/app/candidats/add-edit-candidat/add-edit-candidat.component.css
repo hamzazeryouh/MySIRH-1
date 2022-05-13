@@ -1,0 +1,7 @@
+label.star {
+    float: left;
+    padding: 10px;
+    font-size: 15px;
+    color: #444;
+    transition: all .2s;
+}

@@ -51,7 +51,7 @@ namespace API_MySIRH.Repositories
 
        public async Task<dynamic> GetEntretienByCandidat(int candidatid)
         {
-            var Entretien = await this._context.Entretiens.ToListAsync();
+            var Entretien = await this._context.Entretiens.Where(e=>e.CandidatId==candidatid).ToListAsync();
             if (Entretien is null) return null;
              Entretien.Select(async e => e.Templates = _context.Templates.Where(x => x.EntretienId == e.Id).ToList()).ToList();
             return Entretien;

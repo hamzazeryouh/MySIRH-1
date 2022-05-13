@@ -6,13 +6,13 @@ namespace API_MySIRH.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class CommenterController : ControllerBase
+    public class NoteController : ControllerBase
     {
         private readonly INoteservice _Noteservice;
 
-        public CommenterController(INoteservice Commenterervice)
+        public NoteController(INoteservice Noteervice)
         {
-            this._Noteservice = Commenterervice;
+            this._Noteservice = Noteervice;
         }
 
         [HttpGet]
@@ -23,28 +23,28 @@ namespace API_MySIRH.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<NoteDTO>> GetCommenter(int id)
+        public async Task<ActionResult<NoteDTO>> GetNote(int id)
         {
-            return Ok(await this._Noteservice.GetCommenter(id));
+            return Ok(await this._Noteservice.GetNote(id));
         }
 
         [HttpPost]
-        public async Task<ActionResult> AddCommenter(NoteDTO CommenterDTO)
+        public async Task<ActionResult> AddNote(NoteDTO NoteDTO)
         {
-            var CommenterToCreate = await this._Noteservice.AddCommenter(CommenterDTO);
-            return CreatedAtAction(nameof(GetCommenter), new { id = CommenterToCreate.Id }, CommenterToCreate);
+            var NoteToCreate = await this._Noteservice.AddNote(NoteDTO);
+            return CreatedAtAction(nameof(GetNote), new { id = NoteToCreate.Id }, NoteToCreate);
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<NoteDTO>> UpdateCommenter(int id, NoteDTO CommenterDTO)
+        public async Task<ActionResult<NoteDTO>> UpdateNote(int id, NoteDTO NoteDTO)
         {
-            if (id != CommenterDTO.Id)
+            if (id != NoteDTO.Id)
             {
                 return BadRequest();
             }
             try
             {
-                await this._Noteservice.UpdateCommenter(id, CommenterDTO);
+                await this._Noteservice.UpdateNote(id, NoteDTO);
             }
             catch
             {
@@ -55,12 +55,12 @@ namespace API_MySIRH.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteCommenter(int id)
+        public async Task<IActionResult> DeleteNote(int id)
         {
-            var Commenter = await this._Noteservice.GetCommenter(id);
-            if (Commenter is null)
+            var Note = await this._Noteservice.GetNote(id);
+            if (Note is null)
                 return NotFound();
-            await this._Noteservice.DeleteCommenter(id);
+            await this._Noteservice.DeleteNote(id);
             return NoContent();
         }
     }
