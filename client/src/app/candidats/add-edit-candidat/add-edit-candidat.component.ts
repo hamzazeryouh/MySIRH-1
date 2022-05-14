@@ -19,6 +19,7 @@ import { Entretien } from 'src/app/Models/Entretien';
 import { EntretienService } from 'src/app/services/entretien.service';
 import { Notes } from 'src/app/Models/notes';
 import { notesService } from 'src/app/services/notes.service';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 
 
 
@@ -35,7 +36,6 @@ export class AddEditCandidatComponent implements OnInit {
   Prenom!: string | null;
   Poste!: any;
   Niveau!: any;
-
   form!: FormGroup;
   formNote: FormGroup;
   mode = false;
@@ -50,27 +50,24 @@ export class AddEditCandidatComponent implements OnInit {
   ListTemplate: any[];
   EvMode = false;
   ListEntretien: any[];
+  CandidatId: 0;
   //begin from  Entretien
-  TemplateMode = false;
-  Templateid: Number;
+  EntretienEdit:Number;
   EntretienModal: Entretien = new Entretien();
-  templatemodal: Template = new Template();
   NoteModal: Notes = new Notes();
   Evaluateur: '';
   DateEntretienn: '';
-  CandidatId: 0;
-  NoterId: 0;
-  TemplateId: 0;
   EntretienData: any[];
-
+  // end Entretien  
+  // begin part Notes
   Notes:any;
-  
-  // end Entretien
-
-  
-
+  NoterId: 0;
+  //end part notes 
   //begin Template model
-
+  TemplateMode = false;
+  Templateid: Number;
+  TemplateId: 0;
+  templatemodal: Template = new Template();
   //end template model
   endPoint: string = `${environment.URL}api/Candidat`;
   rating3: number;
@@ -84,7 +81,8 @@ export class AddEditCandidatComponent implements OnInit {
     private NotesService: notesService,
     private PosteNiveauService: PosteNiveauService,
     private route: ActivatedRoute,
-    private Router: Router
+    private Router: Router,
+    private toastEvokeService: ToastEvokeService
   ) {
 
 
@@ -148,7 +146,9 @@ export class AddEditCandidatComponent implements OnInit {
 
 
   back(): void {
-    this.location.back();
+   // this.location.back();
+   this.EntretienModal.id=0;
+   this.EntretienModal.Evaluateur
   }
 
   GetImage(image: any) {
@@ -264,6 +264,7 @@ export class AddEditCandidatComponent implements OnInit {
         title: 'Oops...',
         text: 'Vous devez ajouter Candidate First !',
       });
+      return null;
     }
     this.templatemodal.EntretienId = this.EntretienModal.id;
     this.templatemodal.id=Number( this.Templateid);
@@ -295,6 +296,23 @@ export class AddEditCandidatComponent implements OnInit {
     });
   }
 */
+editEntretien(id:Number){
+this.EntretienModal.id=Number(id);
+}
+
+deleteEntretien(id:Number){
+
+  this.EntretienService.Delete(Number(id)).subscribe(data=>{
+    Swal.fire({
+      position: 'top-end',
+      icon: 'success',
+      title: 'Votre candidature a été mise à jour',
+      showConfirmButton: false,
+      timer: 1500,
+    });
+  })
+
+}
   AddEntretien() {
     if ((this.EvMode == false)) {
       this.EntretienModal.CandidatId = Number(this.id);
@@ -350,5 +368,11 @@ export class AddEditCandidatComponent implements OnInit {
     this.NotesService.Add(this.NoteModal).subscribe(data=>{
     });
     this.NoteModal=new Notes();
+  }
+
+  setEntretienid(id:Number){
+   console.log("****************"+id);
+   debugger;
+   this.EntretienModal.id=Number(id);
   }
 }
