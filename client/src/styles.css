@@ -9,6 +9,14 @@ body {
   vertical-align: text-bottom;
 }
 
+label.star{
+  float: right !important;
+  padding:5px !important;
+  font-size: 15px !important;
+  color: #444 !important;
+  transition: all .1s !important;
+}
+
 /*
  * Navbar
  */

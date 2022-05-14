@@ -63,5 +63,12 @@ namespace API_MySIRH.Controllers
             await this._Noteservice.DeleteNote(id);
             return NoContent();
         }
+
+
+        [HttpGet("findNoteByTemplate/{id}")]
+        public async Task<ActionResult<NoteDTO>> findNoteByTemplate(int id)
+        {
+            return Ok(await this._Noteservice.findNoteByTemplate(id));
+        }
     }
 }

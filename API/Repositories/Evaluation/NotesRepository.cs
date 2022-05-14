@@ -55,5 +55,11 @@ namespace API_MySIRH.Repositories
             await this._context.SaveChangesAsync();
         }
 
+
+        public async Task<Notes> findNoteByTemplate(int Templateid)
+        {
+            return await _context.Notes.Where(e=>e.TemplateId.Equals(Templateid)).FirstOrDefaultAsync();
+        }
+
     }
 }

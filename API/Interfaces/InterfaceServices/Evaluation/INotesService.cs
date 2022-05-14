@@ -14,6 +14,7 @@ namespace API_MySIRH.Interfaces
         Task UpdateNote(int id, NoteDTO Note);
         Task<NoteDTO> AddNote(NoteDTO Note);
         Task DeleteNote(int id);
+        Task<NoteDTO> findNoteByTemplate(int Templateid);
 
     }
 }

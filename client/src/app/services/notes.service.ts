@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 import { MDM } from '../Models/MDM';
@@ -14,4 +15,10 @@ export class notesService extends BaseService<Notes,number> {
   constructor(protected override http: HttpClient) {
     super(http,notesService.endPoint);
   }
+
+
+    findNoteByTemplate(id:number): Observable<Notes> {
+      return this.http.get<Notes>(`${notesService.endPoint}/findNoteByTemplate/${id}`);
+    
+    }
 }

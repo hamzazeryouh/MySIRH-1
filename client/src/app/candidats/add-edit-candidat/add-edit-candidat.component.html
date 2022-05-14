@@ -565,238 +565,88 @@
             <!--li Entretien-->
             <a ngbNavLink class="h6 mx-1 p-2">Entretien candidat</a>
             <ng-template ngbNavContent>
-              <div class="card m-2" *ngFor="let e of ListEntretien">
-                <div class="card-body">
-                  <form class="p-2 needs-validation" autocomplete="off">
-                    <div class="row">
-                      <div class="col">
-                        <div class="form-outline mx">
-                          <label class="form-label" for="prenom"
-                            >Evaluateur :</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control form-control-sm"
-                            autocomplete="off"
-                            required
-                            name="e.evaluateur"
-                            value="{{ e.evaluateur }}"
-                          />
-                        </div>
-                      </div>
+             <div class=" row p-2 my-2">
+               <div class="col " >
+                <button class=" btn btn-primary float-end mx-1" data-toggle="tooltip" data-placement="top" title="ajouter un nouveau Entretien">
+                  <i class="bi bi-plus-lg"></i>
+                </button>
+                <button class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top" title="export Entretien excel">
+                  <i class="bi bi-file-earmark-excel"></i>
+                </button>
 
-                      <div class="col">
-                        <div class="form-outline">
-                          <label class="form-label">Date de entretien :</label>
-                          <input
-                            class="form-control form-control-sm"
-                            autocomplete="off"
-                            required
-                            type="date"
-                            value="{{ e.dateEntretien }}"
-                            name="e.dateEntretien"
-                          />
-                        </div>
-                      </div>
+                <button class=" btn btn-danger float-end mx-1 " data-toggle="tooltip" data-placement="top" title="export Entretien pdf">
+                  <i class="bi bi-file-earmark-pdf"></i>
+                </button>
+               </div>
 
-                      <div class="col">
-                        <button
-                          style="outline: none; border: none; margin-top: 32px"
-                          data-bs-toggle="modal"
-                          data-bs-target="#addnewTemplateModal"
-                          aria-label="add"
-                          class="btn btn-primary"
-                         
-                        >
-                          <i class="bi bi-plus-circle"></i>
-                          Ajoute template
-                        </button>
-                      </div>
+             </div>
+             <div class="card"*ngFor="let e of ListEntretien">
+               <div class="card-header">
+                <div class="row">
+                  <div class="col p-1">
+                    <p class=" mx-2 "><i class="bi bi-person-circle mx-1"></i> <span class="h6">Evaluateur : </span> {{e.evaluateur}}</p>
+                  </div>
+                  <div class="col p-1">
+                    <p class="mx-2"> <i class="bi bi-calendar-check-fill mx-1"></i> 
+                      <span class="h6">Date de Entretien :</span> {{e.dateEntretien | date}}</p>
+                  </div>
+
+                  <div class="col p-1">
+
+                    <div class="dropdown float-end">
+                      <button style="border:none; background-color: none;" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                       <i class="bi bi-three-dots-vertical"></i>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                      </ul>
                     </div>
-                    <div
-                      *ngFor="let item of e.templates; let index = index"
-                      class="row"
-                    >
-                      <div class="col">
-                        <div class="form-outline mx">
-                          <label
-                            *ngIf="index == 0"
-                            class="form-label"
-                            for="prenom"
-                            >Technologie :</label
-                          >
-                          <input
-                            readonly
-                            type="text"
-                            class="form-control form-control-sm my-1"
-                            autocomplete="off"
-                            value="{{ item.technologie }}"
-                            required
-                          />
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-outline mx">
-                          <label
-                            *ngIf="index == 0"
-                            class="form-label"
-                            for="prenom"
-                            >theme :</label
-                          >
-                          <input
-                            value=""
-                            type="text"
-                            class="form-control form-control-sm my-1"
-                            required
-                            readonly
-                            value="{{ item.them }}"
-                          />
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-outline mx">
-                          <label
-                            *ngIf="index == 0"
-                            class="form-label"
-                            for="prenom"
-                            >Titre :</label
-                          >
-                          <input
-                            type="text"
-                            class="form-control form-control-sm my-1"
-                            autocomplete="off"
-                            required
-                            value="{{ item.title }}"
-                            readonly
-                          />
-                        </div>
-                      </div>
-                      <div class="col">
-                        <div class="form-outline mx">
-                          <label
-                            *ngIf="index == 0"
-                            class="form-label text-center"
-                            for="Note"
-                            >Note :</label
-                          >
-                          <form
-                          [formGroup]="formNote">
-                          <ngx-star-rating class="stare" [(ngModel)]="NoteModal.Note" formControlName="rating" [id]="'rating'"></ngx-star-rating>
-                        </form>
-                        </div>
-                      </div>
-                     
-
-                      <div class="col mt-3">
-                        <div class="form-outline mx">
-                          <label
-                            class="form-label"
-                            *ngIf="index == 0"
-                            for="Note"
-                          >
-                          </label>
-                          <div class="container justify-content-end">
-
-                            <button
-                            data-bs-toggle="modal"
-                            data-bs-target="#addnewCommenterModal"
-                            aria-label="add"
-                            data-toggle="tooltip" data-placement="top" title="Ajouter un commentaire dans la note"
-                            class="btn btn-sm btn-info"
-                          >
-                            <i class="bi bi-plus-circle"></i>
-                          </button>
-                            <button
-                              data-bs-toggle="modal"
-                              (click)="EditTemplate(item.id)"
-                              data-bs-target="#addnewTemplateModal"
-                              aria-label="add"
-                              class="btn btn-sm btn-primary me-2 mb-1"
-                              aria-label="edit"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                class="bi bi-pencil-square"
-                                viewBox="0 0 16 16"
-                              >
-                                <path
-                                  d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"
-                                />
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"
-                                />
-                              </svg>
-                            </button>
-                            <button
-                              (click)="deleteTemplate(item.id)"
-                              class="btn btn-sm btn-danger me-2 mb-1"
-                              data-bs-toggle="modal"
-                              data-bs-target="#deleteModal"
-                              aria-label="delete"
-                            >
-                              <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="16"
-                                height="16"
-                                fill="currentColor"
-                                class="bi bi-trash"
-                                viewBox="0 0 16 16"
-                              >
-                                <path
-                                  d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"
-                                />
-                                <path
-                                  fill-rule="evenodd"
-                                  d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"
-                                />
-                              </svg>
-                            </button>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="form-outline mb-4">
-                      <label class="form-label" for="CommenterId"
-                        >Commentaire</label
-                      >
-                      <textarea
-                        class="form-control form-control-sm"
-                        id="EntretienModal.Commente"
-                        name="e.commente"
-                        rows="4"
-                        value="{{e.commente}}"
-                      ></textarea>
-                    </div>
-                    <div
-                      class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center border-bottom"
-                    >
-                      <div></div>
-                      <div *ngIf="">
-
-
-                        <button
-                          type="button"
-                          (click)="AddEntretien()"
-                          class="btn btn-primary btn-sm"
-                        >
-                          valider
-                        </button>
-                        <button
-                          type="button"
-                          class="btn btn-secondary btn-sm"
-                          (click)="back()" 
-                        >
-                          Annuler
-                        </button>
-                      </div>
-                    </div>
-                  </form>
+                  </div>
                 </div>
-              </div>
+               </div>
+               <div class="card-body">
+                 <div>
+                   <p class="h6">
+                     Template
+                   </p>
+                 </div>
+                 <div *ngIf="e.templates!==null">
+                  <div class="border-1 shadow-sm my-1" *ngFor="let item of e.templates" >
+                    <div class=" row">
+                      <div class="col">
+                        <p class=" mx-2 "> <span class="h6">Technologie : </span> {{item.technologie}}</p>
+                      </div>
+                      <div class="col">
+                        <p class=" mx-2 "> <span class="h6">Theme : </span> {{item.them}}</p>
+                      </div>
+                      <div class="col">
+                        <p class=" mx-2 "><span class="h6">Titre : </span> {{item.title}}</p>
+                      </div>
+                      <div class="col">
+                        4
+                      </div>
+                      <div class="col">
+                        5
+                      </div>
+                    </div>
+                 
+                  </div>
+                 </div>
+
+<div *ngIf="e.templates===null">
+  <div class="row mx-4 border p-3">
+    <div class="card-body">
+       <p> hamza </p>
+    </div>
+ 
+  </div>
+</div>
+            
+
+               </div>
+
+
+             </div>
             </ng-template>
           </li>
 
@@ -924,7 +774,9 @@
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">ajouter commentaire</h5>
+          <h5 class="modal-title" id="exampleModalLabel">
+            ajouter commentaire
+          </h5>
           <button
             type="button"
             class="btn-close"
@@ -943,7 +795,8 @@
                     <angular-editor
                       [placeholder]="'Enter text here...'"
                       [(ngModel)]="NoteModal.Commente"
-                    ></angular-editor>
+                    >
+                    </angular-editor>
                   </div>
                 </div>
               </div>
@@ -968,4 +821,46 @@
     </div>
   </div>
   <!--end modal add new Template -->
+
+
+
+<div
+  class="modal fade"
+  id="deleteModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">
+          Archiver Candidat
+        </h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Vous êtes sûr de vouloir supprimer ? Entretien 
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="button"
+          data-bs-dismiss="modal"
+          (click)="deleteEntretien(EntretienModal.id)"
+          class="btn btn-danger"
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
 </div>

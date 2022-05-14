@@ -104,12 +104,12 @@ export class HttpRequestInterceptor implements HttpInterceptor {
                   console.log('This is client side error');
                 debugger;
                  //this.toastService.show('Error Server', { classname: 'bg-danger text-light', delay: 15000 });
-                 this.toastEvokeService.warning('Error Server !', 'Error Server !').subscribe();
+                 this.toastEvokeService.danger('Error Server !', 'Error Server !').subscribe();
                   errorMsg = `Error: ${error.error.message}`;
                   this.Error.emit(errorMsg);
                   console.log(errorMsg);
               } else {
-                this.toastEvokeService.warning('Error Server !', 'Error Server !').subscribe();
+                this.toastEvokeService.danger('Error Server !', 'Error Server !').subscribe();
                   console.log('This is server side error');
                   errorMsg = `Error Code: ${error.status},  Message: ${error.message}`;
               }

@@ -52,5 +52,12 @@ namespace API_MySIRH.Services
             await this._NoteRepository.UpdateNote(id, this._mapper.Map<Notes>(Note));
         }
 
+
+        public async Task<NoteDTO> findNoteByTemplate(int Templateid)
+        {
+          return  this._mapper.Map<NoteDTO>(await this._NoteRepository.findNoteByTemplate(Templateid));
+        }
+
+
     }
 }
