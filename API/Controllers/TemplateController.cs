@@ -55,6 +55,29 @@ namespace API_MySIRH.Controllers
             return NoContent();
         }
 
+        [HttpPut("Note/{id}")]
+        public async Task<ActionResult<TemplateDTO>> UpdateTemplateNote(int id, TemplateNoteDTO TemplateDTO)
+        {
+            if (id != TemplateDTO.Id)
+            {
+                return BadRequest();
+            }
+            try
+            {
+                await this._TemplateService.UpdateTemplateNote(id, TemplateDTO);
+            }
+            catch
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+
+
+
+
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteTemplate(int id)
         {

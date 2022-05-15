@@ -58,6 +58,7 @@ export class AddEditCandidatComponent implements OnInit {
   Evaluateur: '';
   DateEntretienn: '';
   EntretienData: any[];
+  deleteEntretienid=0;
   // end Entretien  
   // begin part Notes
   Notes:any;
@@ -148,9 +149,12 @@ export class AddEditCandidatComponent implements OnInit {
 
 
   back(): void {
-   // this.location.back();
-   this.EntretienModal.id=0;
-   this.EntretienModal.Evaluateur
+    this.location.back();
+
+  }
+  annulerEntretien(){
+    this.EntretienModal.id=0;
+    this.GetListEntretien(Number(this.id))
   }
 
   GetImage(image: any) {
@@ -242,11 +246,13 @@ export class AddEditCandidatComponent implements OnInit {
  
 GetEntretien(id: any){
 this.EntretienService.Get(id).subscribe(data=>{
-  console.log("data"+ Object.values(data));
+
 this.EntretienModal.id=data.id;
-this.EntretienModal.DateEntretien=data.DateEntretien;
-this.EntretienModal.Commente=data.Commente;
-this.EntretienModal.Evaluateur=data.Evaluateur;
+this.EntretienModal.dateEntretien=data.dateEntretien;
+this.EntretienModal.commente=data.commente;
+this.EntretienModal.evaluateur=data.evaluateur;
+this.EntretienModal.candidatId=Number(this.id); 
+
 });
 }
   GetListEntretien(id: number) {
@@ -300,16 +306,29 @@ this.EntretienModal.Evaluateur=data.Evaluateur;
 */
 editEntretien(id:Number){
   this.EntretienModal.id=Number(id);
-  this.GetEntretien(id);
-  console.log("++++++++++++++++++++++++"+Object.values(this.EntretienModal));
+  //this.GetEntretien(id);
+  console.log("tttttttttttttttttttttttttttttttttttttttt"+Object.values(this.EntretienModal) );
   
+  this.EntretienService.Update(
+    this.EntretienModal.id.toString(),
+    this.EntretienModal
+  ).subscribe((data) => {
+    this.templatemodal.EntretienId = data.id;
+    this.EntretienModal = data;
+
+  });
+
+ // this.GetEntretien(id);
 
 
 
 }
+setdeleteEntretien(id:Number){
+  this.deleteEntretienid =Number(id);
+}
 
-deleteEntretien(id:Number){
-  this.EntretienService.Delete(Number(id)).subscribe(data=>{
+deleteEntretien(){
+  this.EntretienService.Delete(this.deleteEntretienid).subscribe(data=>{
     Swal.fire({
       position: 'top-end',
       icon: 'success',
@@ -320,33 +339,19 @@ deleteEntretien(id:Number){
   })
 
 }
+
   AddEntretien() {
-    debugger;
-    if ((this.EvMode == false)) {
-      if(this.EntretienModal.DateEntretien==null || this.EntretienModal.Evaluateur==null){
+      if(this.EntretienModal.dateEntretien==null || this.EntretienModal.evaluateur==null){
         this.toastEvokeService.warning("error !",'remplir les champs obligatoires');
         return null;
       }
-      this.EntretienModal.CandidatId = Number(this.id);
+      this.EntretienModal.candidatId = Number(this.id);
       this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
         this.templatemodal.EntretienId = data.id;
         this.EntretienModal = data;
         this.templatemodal = new Template();
         this.EvMode = true;
       });
-    } else {
-      this.EntretienModal.CandidatId = Number(this.id);
-      this.EntretienService.Update(
-        this.EntretienModal.id.toString(),
-        this.EntretienModal
-      ).subscribe((data) => {
-        this.templatemodal.EntretienId = data.id;
-        this.EntretienModal = data;
-        this.addTemplate();
-        this.EvMode = true;
-
-      });
-    }
   }
 
   GetNote(id:any):any{
@@ -398,5 +403,6 @@ deleteEntretien(id:Number){
 
   setEntretienid(id:Number){
    this.EntretienModal.id=Number(id);
+   this.GetEntretien(id);
   }
 }

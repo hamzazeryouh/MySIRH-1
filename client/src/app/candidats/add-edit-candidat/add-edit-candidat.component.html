@@ -387,13 +387,43 @@
                 <div class="card-header">
                   <div class="row">
                     <div class="col p-1">
-                      <p class=" mx-2 "><i class="bi bi-person-circle mx-1"></i> <span class="h6">Evaluateur : </span>
+                      <p *ngIf="EntretienModal.id!=e.id" class=" mx-2 "><i class="bi bi-person-circle mx-1"></i> <span class="h6">Evaluateur : </span>
                         {{e.evaluateur}}</p>
+
+                        <div *ngIf="EntretienModal.id==e.id" class="p-1 form-outline mx">
+                          <label class="form-label" for="prenom"
+                            >Evaluateur :
+                          </label>
+                          <input
+                            type="text"
+                            class="form-control form-control-sm"
+                            autocomplete="off"
+                            [(ngModel)]="EntretienModal.evaluateur"
+                            required
+                            name="e.evaluateur"
+                          />
+                        </div>
+
                     </div>
                     <div class="col p-1">
-                      <p class="mx-2"> <i class="bi bi-calendar-check-fill mx-1"></i>
+                      <p *ngIf="EntretienModal.id!=e.id"  class="mx-2"> <i class="bi bi-calendar-check-fill mx-1"></i>
                         <span class="h6">Date de Entretien :</span> {{e.dateEntretien | date}}
                       </p>
+                      <div *ngIf="EntretienModal.id==e.id" class="form-outline">
+                        <label class="form-label">Date de entretien :</label>
+                        <input
+                          class="form-control form-control-sm"
+                          autocomplete="off"
+                          required
+                          type="date"
+                          name="e.dateEntretien"
+                          [(ngModel)]="EntretienModal.dateEntretien"
+                        />
+                      </div>
+
+
+
+
                     </div>
 
                     <div class="col p-1">
@@ -403,19 +433,19 @@
                           <i class="bi bi-three-dots-vertical"></i>
                         </button>
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                          <li><a data-bs-toggle="modal" data-bs-target="#addnewentretienModal" aria-label="add"
-                              class="dropdown-item" (click)="editEntretien(e.id)">Edit</a></li>
-                              <li><a data-bs-toggle="modal"  data-bs-target="#deleteentretienModal" aria-label="add"
+                          <li><a
+                              class="dropdown-item" (click)="setEntretienid(e.id)" >Edit</a></li>
+                              <li><a data-bs-toggle="modal" (click)="setdeleteEntretien(e.id)" data-bs-target="#deleteentretienModal" aria-label="add"
                                 class="dropdown-item">Delete</a></li>
                         </ul>
                       </div>
                     </div>
                   </div>
                 </div>
-                <div class="card-body">
+                <div class="container">
                   <div>
                     <p class="h6">
-                      Template
+                      Liste de modèles :
                     </p>
                   </div>
                   <div *ngIf="e.templates!==null">
@@ -431,7 +461,7 @@
                           <span class="h6 p-1">Titre : </span> {{item.title}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1">note : </span> {{GetNote(item.id)}}
+                          <span class="h6 p-1">note : </span> 
                         </div>
                         <div class="col" *ngIf="EntretienModal.id==e.id">
                           <button *ngIf="TemplateMode==true" data-bs-toggle="modal"
@@ -455,30 +485,47 @@
 
                     </div>
                   </div>
-
-                  <div *ngIf="e.templates.count==0">
-                    <div class="row mx-4 border p-3">
-                      <div class="card-body">
-                        <p> hamza </p>
+                  <div *ngIf="e.templates===null">
+                    <div class="border-1 shadow-sm my-3 " *ngFor="let item of e.templates">
+                      <div class="row p-3">
+                        Liste de modèles vide 
                       </div>
 
                     </div>
                   </div>
-
-
                 </div>
 
-                <div class="row" *ngIf="EntretienModal.id==e.id">
-
-                  <div class="col">
+                <div class="row container " *ngIf="EntretienModal.id==e.id">
+                  <div class="col ">
                     <div class="form-outline mx">
                       <label class="form-label h6" for="prenom">Commenter :</label>
-                      <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="EntretienModal.Commente"
+                      <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="EntretienModal.commente"
                         (viewMode)="true">
                       </angular-editor>
                     </div>
                   </div>
                 </div>
+
+                <div class="row container " *ngIf="EntretienModal.id==e.id">
+                  <div class="col p-3 ">
+                    <button
+                    type="button"
+                    (click)="editEntretien(e.id)"
+                    class="btn btn-primary btn-sm mx-1 float-end"
+                  >
+                    valider
+                  </button>
+                  <button
+                    type="button"
+                    class="btn btn-secondary btn-sm float-end"
+                    (click)="annulerEntretien()"
+                  >
+                    Annuler
+                  </button>
+                  </div>
+
+                </div>
+
 
 
 
@@ -624,7 +671,7 @@
                 <div class="col">
                   <div class="form-outline mx">
                     <label class="form-label h6" for="prenom">Evaluateur :</label>
-                    <input [(ngModel)]="EntretienModal.Evaluateur" type="text" class="form-control form-control-sm"
+                    <input [(ngModel)]="EntretienModal.evaluateur" type="text" class="form-control form-control-sm"
                       autocomplete="off" required name="EntretienModal.Evaluateur" [ngClass]="{
                     'is-invalid': submitted && error['theme'].errors
                   }" />
@@ -633,7 +680,7 @@
                 <div class="col my-2">
                   <div class="form-outline mx">
                     <label class="form-label h6" for="prenom">Date de Entretien :</label>
-                    <input [(ngModel)]="EntretienModal.DateEntretien" type="date" class="form-control form-control-sm"
+                    <input [(ngModel)]="EntretienModal.dateEntretien" type="date" class="form-control form-control-sm"
                       autocomplete="off" required name="EntretienModal.DateEntretien" [ngClass]="{
                     'is-invalid': submitted && error['theme'].errors
                   }" />
@@ -646,7 +693,7 @@
                       <div class="form-outline mx">
                         <label class="form-label h6" for="prenom">Commenter :</label>
                         <angular-editor [placeholder]="'Enter text here...'" 
-                        [(ngModel)]="EntretienModal.Commente"
+                        [(ngModel)]="EntretienModal.commente"
                         name="EntretienModal.Commente"
                           (viewMode)="true">
                         </angular-editor>
@@ -690,7 +737,7 @@
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
-          <button type="button" data-bs-dismiss="modal" (click)="deleteEntretien(EntretienModal.id)"
+          <button type="button" data-bs-dismiss="modal" (click)="deleteEntretien()"
             class="btn btn-danger">
             Delete
           </button>

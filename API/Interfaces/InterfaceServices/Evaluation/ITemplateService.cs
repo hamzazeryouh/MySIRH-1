@@ -15,5 +15,7 @@ namespace API_MySIRH.Interfaces
         Task<TemplateDTO> AddTemplate(TemplateDTO Template);
         Task DeleteTemplate(int id);
 
+        Task UpdateTemplateNote(int id, TemplateNoteDTO Template);
+
     }
 }

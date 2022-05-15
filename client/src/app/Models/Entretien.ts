@@ -14,9 +14,9 @@ export interface IEntretien extends IBase {
   
 }
 export class Entretien extends Base {
-      Evaluateur  :string;
-      DateEntretien :Date;
-      CandidatId   :number;
-      Commente :string;
+      evaluateur  :string;
+      dateEntretien :Date;
+      candidatId   :number;
+      commente :string;
 }
 

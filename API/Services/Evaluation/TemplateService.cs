@@ -52,5 +52,11 @@ namespace API_MySIRH.Services
         {
             await this._TemplateRepository.UpdateTemplate(id, this._mapper.Map<Template>(Template));
         }
+
+
+        public async Task UpdateTemplateNote(int id, TemplateNoteDTO Template)
+        {
+            await this._TemplateRepository.UpdateTemplate(id, this._mapper.Map<Template>(Template));
+        }
     }
 }
