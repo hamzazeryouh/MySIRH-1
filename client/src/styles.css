@@ -9,6 +9,14 @@ body {
   vertical-align: text-bottom;
 }
 
+label.star{
+  float: right !important;
+  padding:5px !important;
+  font-size: 15px !important;
+  color: #444 !important;
+  transition: all .1s !important;
+}
+
 /*
  * Navbar
  */
@@ -157,3 +165,5 @@ body {
 @import '../node_modules/@syncfusion/ej2-pdfviewer/styles/material.css';
 @import '../node_modules/@syncfusion/ej2-notifications/styles/material.css';
 @import "node_modules/@costlydeveloper/ngx-awesome-popup/styles/theme";
+
+@import '~css-star-rating/scss/star-rating';

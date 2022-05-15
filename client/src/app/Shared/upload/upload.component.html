@@ -1,7 +1,7 @@
 <div   class="row p-3">
     <div class="col-md-3">
       <input type="file" #file   [id]="id" placeholder="Choose file" (change)="uploadFile(file.files)" style="display:none;">
-      <button type="button"  class="btn btn-primary" (click)="file.click()">Upload File</button>
+      <button type="button"  class="btn btn-primary btn-sm" data-toggle="tooltip" data-placement="top" title="Télécharger le document CV du candidat extation '.pdf,doc'." (click)="file.click()"><i class="bi bi-upload"></i></button>
     </div>
     <div class="col-md-4">
      <!--

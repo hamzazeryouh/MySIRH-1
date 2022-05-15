@@ -9,7 +9,7 @@ namespace API_MySIRH.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations");
 
             migrationBuilder.AlterColumn<int>(
@@ -21,17 +21,17 @@ namespace API_MySIRH.Migrations
                 oldType: "int");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations",
                 column: "CommenterId",
-                principalTable: "Commenters",
+                principalTable: "Notes",
                 principalColumn: "Id");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations");
 
             migrationBuilder.AlterColumn<int>(
@@ -45,10 +45,10 @@ namespace API_MySIRH.Migrations
                 oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_Evaluations_Commenters_CommenterId",
+                name: "FK_Evaluations_Notes_CommenterId",
                 table: "Evaluations",
                 column: "CommenterId",
-                principalTable: "Commenters",
+                principalTable: "Notes",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Cascade);
         }

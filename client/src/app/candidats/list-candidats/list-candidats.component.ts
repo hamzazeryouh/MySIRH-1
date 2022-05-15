@@ -14,6 +14,7 @@ import * as XLSX from 'xlsx';
 @Component({
   selector: 'app-list-candidats',
   templateUrl: './list-candidats.component.html',
+ //templateUrl: './index.html',
   styleUrls: ['./list-candidats.component.css'],
  // providers: [CandidatService, DecimalPipe],
 })

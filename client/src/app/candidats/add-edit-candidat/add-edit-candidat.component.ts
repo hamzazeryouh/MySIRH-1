@@ -11,15 +11,18 @@ import { PosteNiveauService } from 'src/app/services/poste-niveau.service';
 import { Candidat, ICandidat } from 'src/app/Models/Candidat.model';
 import { ActivatedRoute, Route, Router } from '@angular/router';
 import Swal from 'sweetalert2';
-import { SideBarComponent } from 'src/app/home/side-bar/side-bar.component';
 import { environment } from 'src/environments/environment';
-import { Evaluation, IEvaluation } from 'src/app/Models/Evaluation';
-import { EvaluationService } from 'src/app/services/evaluation.service';
 import { TemplateService } from 'src/app/services/template.service';
-import { commenterService } from 'src/app/services/commenter.service';
-import { ITemplate, Template } from 'src/app/Models/Template';
-import { Commenter, ICommenter } from 'src/app/Models/Commenter';
-import { ThumbnailViewService } from '@syncfusion/ej2-angular-pdfviewer';
+
+import { Template, TemplateDTO } from 'src/app/Models/Template';
+import { Entretien } from 'src/app/Models/Entretien';
+import { EntretienService } from 'src/app/services/entretien.service';
+import { Notes } from 'src/app/Models/notes';
+import { notesService } from 'src/app/services/notes.service';
+import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { TextSearchColorSettings } from '@syncfusion/ej2-angular-pdfviewer';
+import { throws } from 'assert';
 
 @Component({
   selector: 'app-add-edit-candidat',
@@ -28,13 +31,14 @@ import { ThumbnailViewService } from '@syncfusion/ej2-angular-pdfviewer';
 })
 export class AddEditCandidatComponent implements OnInit {
   modal: Candidat = new Candidat();
+
   Civilite?: string | null;
   Nom: string | null;
   Prenom!: string | null;
   Poste!: any;
   Niveau!: any;
-
   form!: FormGroup;
+  formNote: FormGroup;
   mode = false;
   submitted = false;
   postes!: any[];
@@ -43,42 +47,51 @@ export class AddEditCandidatComponent implements OnInit {
   iditem: number;
   ImageUrl = '';
   pdfSrc = '';
-  Ev: Evaluation = new Evaluation();
-  ListTemplate: any[];
+  Ev: Entretien = new Entretien();
   EvMode = false;
-  ListEvaluation: any[];
-  //begin from  Evaluation
+  ListEntretien: any[];
+  CandidatId: 0;
+  //begin from  Entretien
+  EntretienEdit: Number;
+  EntretienModal: Entretien = new Entretien();
+  NoteModal: Notes = new Notes();
+  Evaluateur: '';
+  DateEntretienn: '';
+
+  deleteEntretienid = 0;
+  // end Entretien
+  // begin part Notes
+  Notes: any;
+  NoterId: 0;
+  //end part notes
+  //begin Template model
   TemplateMode = false;
   Templateid: Number;
-  evaluationModal: Evaluation = new Evaluation();
-  templatemodal: Template = new Template();
-  CommenteModal: Commenter = new Commenter();
-  Evaluateur: '';
-  DateEntretien: '';
-  CandidatId: 0;
-  CommenterId: 0;
   TemplateId: 0;
-  EvaluationData: any[];
-  // end evaluation
-
-  
-
-  //begin Template model
-
+  TemplateCount = 0;
+  templatemodal: Template = new Template();
   //end template model
   endPoint: string = `${environment.URL}api/Candidat`;
+  rating3: number;
   constructor(
     private location: Location,
     private fb: FormBuilder,
     private service: CandidatService,
     private PosteService: PosteService,
-    private EvaluationService: EvaluationService,
+    private EntretienService: EntretienService,
     private TemplateService: TemplateService,
-    private CommenterService: commenterService,
+    private NotesService: notesService,
     private PosteNiveauService: PosteNiveauService,
     private route: ActivatedRoute,
-    private Router: Router
-  ) {}
+    private Router: Router,
+    private notesService: notesService,
+    private toastEvokeService: ToastEvokeService
+  ) {
+    this.rating3 = 0;
+    this.formNote = this.fb.group({
+      rating: ['', Validators.required],
+    });
+  }
   get error() {
     return this.form.controls;
   }
@@ -96,7 +109,7 @@ export class AddEditCandidatComponent implements OnInit {
       this.postes = Object.values(result);
     });
     this.id = Number(this.route.snapshot.paramMap.get('id'));
-    this.GetListEvaluation(Number(this.id));
+    this.GetListEntretien(Number(this.id));
     this.iditem = Number(this.id);
     if (this.id !== 0) {
       this.mode = true;
@@ -105,30 +118,35 @@ export class AddEditCandidatComponent implements OnInit {
   }
 
   RefrechData() {
-    this.service.Get(Number(this.id)).subscribe((data) => {
-      this.modal = data;
-      this.ImageUrl = String(this.modal.imageUrl);
-      this.setCandidatInForm(this.modal);
-      this.Nom = this.modal.nom;
-      this.Prenom = this.modal.prenom;
-      this.Civilite = this.modal?.civilite;
-      this.PosteService.Get(this.modal.posteId).subscribe((data) => {
-        let P = Object.values(data);
-        this.Poste = P[0];
+    if (this.mode == true) {
+      this.service.Get(Number(this.id)).subscribe((data) => {
+        this.modal = data;
+        this.ImageUrl = String(this.modal.imageUrl);
+        this.setCandidatInForm(this.modal);
+        this.Nom = this.modal.nom;
+        this.Prenom = this.modal.prenom;
+        this.Civilite = this.modal?.civilite;
+        this.PosteService.Get(this.modal.posteId).subscribe((data) => {
+          let P = Object.values(data);
+          this.Poste = P[0];
+        });
+        this.PosteNiveauService.Get(this.modal.posteNiveauId).subscribe(
+          (data) => {
+            let N = Object.values(data);
+            this.Niveau = N[0];
+          }
+        );
+        this.GetImage(this.modal?.imageUrl);
       });
-      this.PosteNiveauService.Get(this.modal.posteNiveauId).subscribe(
-        (data) => {
-          let N = Object.values(data);
-          this.Niveau = N[0];
-        }
-      );
-      this.GetImage(this.modal?.imageUrl);
-    });
+    }
   }
-
 
   back(): void {
     this.location.back();
+  }
+  annulerEntretien() {
+    this.EntretienModal.id = 0;
+    this.GetListEntretien(Number(this.id));
   }
 
   GetImage(image: any) {
@@ -150,6 +168,25 @@ export class AddEditCandidatComponent implements OnInit {
       posteId: data.posteId ?? data.posteId[1],
       posteNiveauId: data.posteNiveauId ?? data.posteNiveauId[1],
       commentaire: data.commentaire,
+    });
+  }
+
+  initForm() {
+    this.form = this.fb.group({
+      nom: [null, [Validators.required]],
+      prenom: [null, [Validators.required]],
+      email: [null, [Validators.pattern(Appsettings.regexEmail)]],
+      telephone: [null, [Validators.pattern(Appsettings.regexPhone)]],
+      civilite: [null, [Validators.required]],
+      datePremiereExperience: [null, [Validators.required]],
+      dateNaissance: [null, [Validators.required]],
+      salaireActuel: [null],
+      propositionSalariale: [null],
+      residenceActuelle: [null],
+      emploiEncore: [null],
+      posteId: [null, [Validators.required]],
+      posteNiveauId: [null, [Validators.required]],
+      commentaire: [null],
     });
   }
 
@@ -198,107 +235,105 @@ export class AddEditCandidatComponent implements OnInit {
       this.RefrechData();
     }
   }
-  initForm() {
-    this.form = this.fb.group({
-      nom: [null, [Validators.required]],
-      prenom: [null, [Validators.required]],
-      email: [null, [Validators.pattern(Appsettings.regexEmail)]],
-      telephone: [null, [Validators.pattern(Appsettings.regexPhone)]],
-      civilite: [null, [Validators.required]],
-      datePremiereExperience: [null, [Validators.required]],
-      dateNaissance: [null, [Validators.required]],
-      salaireActuel: [null],
-      propositionSalariale: [null],
-      residenceActuelle: [null],
-      emploiEncore: [null],
-      posteId: [null, [Validators.required]],
-      posteNiveauId: [null, [Validators.required]],
-      commentaire: [null],
+
+  GetEntretien(id: any) {
+    this.EntretienService.Get(id).subscribe((data) => {
+      this.EntretienModal.id = data.id;
+      this.EntretienModal.dateEntretien = data.dateEntretien;
+      this.EntretienModal.commente = data.commente;
+      this.EntretienModal.evaluateur = data.evaluateur;
+      this.EntretienModal.candidatId = Number(this.id);
     });
   }
-
-  GetListEvaluation(id: number) {
-    this.EvaluationService.GetEvaluationByCandidat(id).subscribe((data) => {
-      if (data != null) {
-        this.EvMode = true;
-      }
-      
-      this.evaluationModal.id = data?.evaluation.id;
-      this.evaluationModal.DateEntretien = data?.evaluation?.dateEntretien;
-      this.evaluationModal.Evaluateur = data?.evaluation?.evaluateur;
-      this.evaluationModal.Commente=data?.evaluation?.commente;
-      this.ListTemplate = data?.template;
-      debugger;
-      
+  GetListEntretien(id: number) {
+    this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
+      this.ListEntretien = [];
+      this.ListEntretien =Object.values(data) ;
+      console.log(data);
     });
   }
 
   addTemplate() {
-    if (this.evaluationModal.id == null) {
+    if (this.EntretienModal.id == null) {
       Swal.fire({
         icon: 'error',
         title: 'Oops...',
         text: 'Vous devez ajouter Candidate First !',
       });
+      return null;
     }
-    this.templatemodal.EvaluationId = this.evaluationModal.id;
-    this.templatemodal.CommenterId=0;
-    this.templatemodal.id=Number( this.Templateid);
+    this.templatemodal.EntretienId = this.EntretienModal.id;
+    this.templatemodal.id = Number(this.Templateid);
     if (this.TemplateMode == true) {
       this.TemplateService.Update(
         this.Templateid.toString(),
         this.templatemodal
       ).subscribe((data) => {});
-      this.GetListEvaluation(Number(this.id));
+      this.GetListEntretien(Number(this.id));
     } else {
       this.TemplateService.Add(this.templatemodal).subscribe((data) => {
-        this.ListTemplate.push(data);
+        // this.ListTemplate.push(data);
       });
       this.templatemodal = new Template();
-      this.GetListEvaluation(Number(this.id));
+      this.GetListEntretien(Number(this.id));
     }
   }
-/*
-  AddCommenter() {
-    this.CommenterService.Add(this.CommenteModal).subscribe((data) => {
-      this.evaluationModal.CommenterId = Number(data.id);
-      console.log(data.id);
+  editEntretien(id: Number) {
+    this.EntretienModal.id = Number(id);
+    //this.GetEntretien(id);
+   
+
+    this.EntretienService.Update(
+      this.EntretienModal.id.toString(),
+      this.EntretienModal
+    ).subscribe((data) => {
+      this.templatemodal.EntretienId = data.id;
+      this.EntretienModal = data;
+    });
+
+    // this.GetEntretien(id);
+  }
+  setdeleteEntretien(id: Number) {
+    this.deleteEntretienid = Number(id);
+  }
+
+  deleteEntretien() {
+    this.EntretienService.Delete(this.deleteEntretienid).subscribe((data) => {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Votre candidature a été mise à jour',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     });
   }
-  EditCommenter(){
-    this.CommenterService.Update(this.CommenteModal.id.toString(), this.CommenteModal).subscribe((data) => {
-      this.evaluationModal.CommenterId = Number(data.id);
-      console.log(data.id);
-    });
-  }
-*/
-  AddEvaluation() {
-    if ((this.EvMode == false)) {
-      this.evaluationModal.CandidatId = Number(this.id);
-      this.EvaluationService.Add(this.evaluationModal).subscribe((data) => {
-        this.templatemodal.EvaluationId = data.id;
-        this.evaluationModal = data;
-        this.templatemodal = new Template();
-        this.EvMode = true;
-      });
-    } else {
-      this.evaluationModal.CandidatId = Number(this.id);
-      this.EvaluationService.Update(
-        this.evaluationModal.id.toString(),
-        this.evaluationModal
-      ).subscribe((data) => {
-        this.templatemodal.EvaluationId = data.id;
-        this.evaluationModal = data;
-        this.addTemplate();
-        this.EvMode = true;
-      });
+
+  AddEntretien() {
+    if (
+      this.EntretienModal.dateEntretien == null ||
+      this.EntretienModal.evaluateur == null
+    ) {
+      this.toastEvokeService.warning(
+        'error !',
+        'remplir les champs obligatoires'
+      );
+      return null;
     }
+    this.EntretienModal.candidatId = Number(this.id);
+    this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
+      this.templatemodal.EntretienId = data.id;
+      this.EntretienModal = data;
+      this.ListEntretien.push(data);
+      this.templatemodal = new Template();
+      this.EvMode = true;
+      this.EntretienModal=new Entretien();
+    });
   }
 
   EditTemplate(id: Number) {
     this.TemplateMode = true;
     this.TemplateService.Get(Number(id)).subscribe((data) => {
-      this.templatemodal.note = data.note;
       this.templatemodal.title = data.title;
       this.templatemodal.technologie = data.technologie;
       this.templatemodal.them = data.them;
@@ -310,7 +345,35 @@ export class AddEditCandidatComponent implements OnInit {
     this.TemplateService.Delete(Number(id)).subscribe((data) => {
       // this.ListTemplate=[];
     });
-    this.GetListEvaluation(Number(this.id));
-  
+    this.GetListEntretien(Number(this.id));
+  }
+
+  editNotes(NoteId: Number) {
+    this.NoteModal.note;
+    //this.NoteModal.TemplateId=Number(TemplateId);
+    this.NotesService.Add(this.NoteModal).subscribe((data) => {});
+    this.NoteModal = new Notes();
+  }
+
+  setEntretienid(id: Number) {
+    this.EntretienModal.id = Number(id);
+    this.GetEntretien(id);
+  }
+
+  updateNote(id:any) {
+    console.log("id---------------------" +id);
+    
+   let note = new TemplateDTO();
+   note.NotesId=Number(this.NoteModal.note) ;
+   this.TemplateService.UpdateNote(id, note).subscribe();
+   this.NoteModal.note = '';
+  }
+
+  GetNote(id:any):any{
+    let note ;
+    if(id==null) return note=0;
+    this.notesService.Get(id).subscribe(data=>{
+      note=data.note;
+    });
   }
 }

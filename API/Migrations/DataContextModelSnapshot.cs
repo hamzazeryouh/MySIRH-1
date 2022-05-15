@@ -154,32 +154,7 @@ namespace API_MySIRH.Migrations
                     b.ToTable("Collaborateurs");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Commenter", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
-
-                    b.Property<string>("Commente")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("ModificationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Commenters");
-                });
-
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Entretien", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -209,7 +184,7 @@ namespace API_MySIRH.Migrations
 
                     b.HasIndex("CandidatId");
 
-                    b.ToTable("Evaluations");
+                    b.ToTable("Entretiens");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.MDM.Poste", b =>
@@ -354,6 +329,31 @@ namespace API_MySIRH.Migrations
                     b.ToTable("Memos");
                 });
 
+            modelBuilder.Entity("API_MySIRH.Entities.Notes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<string>("Commente")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("ModificationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Note")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notes");
+                });
+
             modelBuilder.Entity("API_MySIRH.Entities.Template", b =>
                 {
                     b.Property<int>("Id")
@@ -362,20 +362,23 @@ namespace API_MySIRH.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
-                    b.Property<int?>("CommenterId")
-                        .HasColumnType("int");
+                    b.Property<string>("Commenter")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int?>("EvaluationId")
+                    b.Property<int?>("EntretienId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("ModificationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<decimal?>("Note")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<int?>("NoteValue")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("NotesId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Technologie")
                         .HasColumnType("nvarchar(max)");
@@ -388,9 +391,9 @@ namespace API_MySIRH.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CommenterId");
+                    b.HasIndex("EntretienId");
 
-                    b.HasIndex("EvaluationId");
+                    b.HasIndex("NotesId");
 
                     b.ToTable("Templates");
                 });
@@ -482,10 +485,10 @@ namespace API_MySIRH.Migrations
                     b.Navigation("Poste");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Entretien", b =>
                 {
                     b.HasOne("API_MySIRH.Entities.Candidat", "Candidat")
-                        .WithMany()
+                        .WithMany("entretiens")
                         .HasForeignKey("CandidatId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -495,17 +498,17 @@ namespace API_MySIRH.Migrations
 
             modelBuilder.Entity("API_MySIRH.Entities.Template", b =>
                 {
-                    b.HasOne("API_MySIRH.Entities.Commenter", "Commenter")
-                        .WithMany()
-                        .HasForeignKey("CommenterId");
-
-                    b.HasOne("API_MySIRH.Entities.Evaluation.Evaluation", "Candidat")
+                    b.HasOne("API_MySIRH.Entities.Entretien", "Entretien")
                         .WithMany("Templates")
-                        .HasForeignKey("EvaluationId");
+                        .HasForeignKey("EntretienId");
 
-                    b.Navigation("Candidat");
+                    b.HasOne("API_MySIRH.Entities.Notes", "Note")
+                        .WithMany()
+                        .HasForeignKey("NotesId");
 
-                    b.Navigation("Commenter");
+                    b.Navigation("Entretien");
+
+                    b.Navigation("Note");
                 });
 
             modelBuilder.Entity("API_MySIRH.Entities.ToDoItem", b =>
@@ -519,7 +522,12 @@ namespace API_MySIRH.Migrations
                     b.Navigation("ToDoList");
                 });
 
-            modelBuilder.Entity("API_MySIRH.Entities.Evaluation.Evaluation", b =>
+            modelBuilder.Entity("API_MySIRH.Entities.Candidat", b =>
+                {
+                    b.Navigation("entretiens");
+                });
+
+            modelBuilder.Entity("API_MySIRH.Entities.Entretien", b =>
                 {
                     b.Navigation("Templates");
                 });

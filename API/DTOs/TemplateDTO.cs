@@ -5,8 +5,9 @@
         public string? Technologie { get; set; }
         public string? Them { get; set; }
         public string? Title { get; set; }
-        public decimal? Note { get; set; }
-        public int EvaluationId { get; set; }
-        public int? CommenterId { get; set; }
+        public int? EntretienId { get; set; }
+        public int? NotesId { get; set; }
+
+        public NoteDTO? Notes { get; set; }
     }
 }
