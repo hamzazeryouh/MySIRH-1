@@ -17,6 +17,7 @@ export class Template extends Base {
       them:string;
       title :string;
       EntretienId:Number;
+      NotesId :Number;
   
 }
 
