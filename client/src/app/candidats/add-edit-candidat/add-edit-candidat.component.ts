@@ -257,7 +257,7 @@ export class AddEditCandidatComponent implements OnInit {
   }
 
   addTemplate() {
-    debugger;
+
     if (this.EntretienModal.id == null) {
       Swal.fire({
         icon: 'error',
@@ -298,6 +298,8 @@ export class AddEditCandidatComponent implements OnInit {
 */
 editEntretien(id:Number){
 this.EntretienModal.id=Number(id);
+console.log(this.EntretienModal.id);
+
 }
 
 deleteEntretien(id:Number){

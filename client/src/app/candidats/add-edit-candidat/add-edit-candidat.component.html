@@ -598,7 +598,7 @@
                        <i class="bi bi-three-dots-vertical"></i>
                       </button>
                       <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" href="#">Edit</a></li>
+                        <li><a class="dropdown-item" (click)="editEntretien(e.id)" >Edit</a></li>
                       </ul>
                     </div>
                   </div>
@@ -611,22 +611,41 @@
                    </p>
                  </div>
                  <div *ngIf="e.templates!==null">
-                  <div class="border-1 shadow-sm my-1" *ngFor="let item of e.templates" >
-                    <div class=" row">
-                      <div class="col">
-                        <p class=" mx-2 "> <span class="h6">Technologie : </span> {{item.technologie}}</p>
+                  <div class="border-1 shadow-sm my-3 " *ngFor="let item of e.templates" >
+                    <div class="row p-3">
+                      <div class="col ">
+                        <span class="h6 p-1">Technologie : </span> {{item.technologie}}
                       </div>
                       <div class="col">
-                        <p class=" mx-2 "> <span class="h6">Theme : </span> {{item.them}}</p>
+                        <span class="h6 p-1">Theme : </span> {{item.them}}
                       </div>
                       <div class="col">
-                        <p class=" mx-2 "><span class="h6">Titre : </span> {{item.title}}</p>
+                       <span class="h6 p-1">Titre : </span> {{item.title}}
                       </div>
-                      <div class="col">
-                        4
-                      </div>
-                      <div class="col">
-                        5
+                      <div class="col" *ngIf="EntretienModal.id==e.id">
+                        <button
+                        *ngIf="TemplateMode!=TemplateMode"
+                        data-bs-toggle="modal"
+                        data-bs-target="#addnewCommenterModal"
+                        aria-label="add"
+                        class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top" title="ajouter un nouveau Commentaire">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <button
+                        data-bs-toggle="modal"
+                        data-bs-target="#addnewTemplateModal"
+                        aria-label="add"
+                        class=" btn btn-primary float-end mx-1" data-toggle="tooltip" data-placement="top" title="ajouter un nouveau Template">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
+                        <button
+                        data-bs-toggle="modal"
+                        data-bs-target="#addnewTemplateModal"
+                        aria-label="add"
+                        (click)="EditTemplate(item.id)"
+                        class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top" title="edit Template">
+                          <i class="bi bi-pencil-square"></i>
+                        </button>
                       </div>
                     </div>
                  
@@ -821,8 +840,53 @@
     </div>
   </div>
   <!--end modal add new Template -->
+<!-- begin Modal entretien -->
+<div
+class="modal fade"
+id="addnewCommenterModal"
+tabindex="-1"
+aria-labelledby="exampleModalLabel"
+aria-hidden="true"
+>
+<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title" id="exampleModalLabel">
+        ajouter 
+      </h5>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">
+      <!--begin modal body -->
+      <div>
+        <div class="col">
 
+        </div>
+      </div>
+      <!--end modal body -->
+    </div>
+    <div class="modal-footer">
+      <button
+        type="button"
+        class="btn btn-secondary"
+        data-bs-dismiss="modal"
+      >
+        Close
+      </button>
 
+      <button (click)="addTemplate()" type="button" class="btn btn-primary">
+        valider
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+<!--end  modal entretien  -->
 
 <div
   class="modal fade"
@@ -863,4 +927,10 @@
     </div>
   </div>
 </div>
+
+
+
 </div>
+
+
+
