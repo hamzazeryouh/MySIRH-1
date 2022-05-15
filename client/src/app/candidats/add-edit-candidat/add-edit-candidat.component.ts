@@ -14,14 +14,14 @@ import Swal from 'sweetalert2';
 import { environment } from 'src/environments/environment';
 import { TemplateService } from 'src/app/services/template.service';
 
-import {  Template } from 'src/app/Models/Template';
+import { Template, TemplateDTO } from 'src/app/Models/Template';
 import { Entretien } from 'src/app/Models/Entretien';
 import { EntretienService } from 'src/app/services/entretien.service';
 import { Notes } from 'src/app/Models/notes';
 import { notesService } from 'src/app/services/notes.service';
 import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
-
-
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
+import { TextSearchColorSettings } from '@syncfusion/ej2-angular-pdfviewer';
 
 @Component({
   selector: 'app-add-edit-candidat',
@@ -47,28 +47,27 @@ export class AddEditCandidatComponent implements OnInit {
   ImageUrl = '';
   pdfSrc = '';
   Ev: Entretien = new Entretien();
-  ListTemplate: any[];
   EvMode = false;
-  ListEntretien: any[];
+  ListEntretien: any;
   CandidatId: 0;
   //begin from  Entretien
-  EntretienEdit:Number;
+  EntretienEdit: Number;
   EntretienModal: Entretien = new Entretien();
   NoteModal: Notes = new Notes();
   Evaluateur: '';
   DateEntretienn: '';
-  EntretienData: any[];
-  deleteEntretienid=0;
-  // end Entretien  
+
+  deleteEntretienid = 0;
+  // end Entretien
   // begin part Notes
-  Notes:any;
+  Notes: any;
   NoterId: 0;
-  //end part notes 
+  //end part notes
   //begin Template model
   TemplateMode = false;
   Templateid: Number;
   TemplateId: 0;
-  TemplateCount=0;
+  TemplateCount = 0;
   templatemodal: Template = new Template();
   //end template model
   endPoint: string = `${environment.URL}api/Candidat`;
@@ -84,21 +83,16 @@ export class AddEditCandidatComponent implements OnInit {
     private PosteNiveauService: PosteNiveauService,
     private route: ActivatedRoute,
     private Router: Router,
-     private notesService:notesService,
+    private notesService: notesService,
     private toastEvokeService: ToastEvokeService
   ) {
-
-
     this.rating3 = 0;
     this.formNote = this.fb.group({
       rating: ['', Validators.required],
-    })
+    });
   }
   get error() {
     return this.form.controls;
-
-
-    
   }
 
   ngOnInit(): void {
@@ -123,7 +117,7 @@ export class AddEditCandidatComponent implements OnInit {
   }
 
   RefrechData() {
-    if(this.mode==true){
+    if (this.mode == true) {
       this.service.Get(Number(this.id)).subscribe((data) => {
         this.modal = data;
         this.ImageUrl = String(this.modal.imageUrl);
@@ -144,17 +138,14 @@ export class AddEditCandidatComponent implements OnInit {
         this.GetImage(this.modal?.imageUrl);
       });
     }
-    
   }
-
 
   back(): void {
     this.location.back();
-
   }
-  annulerEntretien(){
-    this.EntretienModal.id=0;
-    this.GetListEntretien(Number(this.id))
+  annulerEntretien() {
+    this.EntretienModal.id = 0;
+    this.GetListEntretien(Number(this.id));
   }
 
   GetImage(image: any) {
@@ -243,29 +234,25 @@ export class AddEditCandidatComponent implements OnInit {
       this.RefrechData();
     }
   }
- 
-GetEntretien(id: any){
-this.EntretienService.Get(id).subscribe(data=>{
 
-this.EntretienModal.id=data.id;
-this.EntretienModal.dateEntretien=data.dateEntretien;
-this.EntretienModal.commente=data.commente;
-this.EntretienModal.evaluateur=data.evaluateur;
-this.EntretienModal.candidatId=Number(this.id); 
-
-});
-}
+  GetEntretien(id: any) {
+    this.EntretienService.Get(id).subscribe((data) => {
+      this.EntretienModal.id = data.id;
+      this.EntretienModal.dateEntretien = data.dateEntretien;
+      this.EntretienModal.commente = data.commente;
+      this.EntretienModal.evaluateur = data.evaluateur;
+      this.EntretienModal.candidatId = Number(this.id);
+    });
+  }
   GetListEntretien(id: number) {
     this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
-      this.ListEntretien=data;
-    //  this.TemplateCount= this.ListEntretien?.template?.length;
-    console.log(this.ListEntretien);
-    
+      this.ListEntretien = null;
+      this.ListEntretien =Object.values(data) ;
+      console.log(data);
     });
   }
 
   addTemplate() {
-
     if (this.EntretienModal.id == null) {
       Swal.fire({
         icon: 'error',
@@ -275,7 +262,7 @@ this.EntretienModal.candidatId=Number(this.id);
       return null;
     }
     this.templatemodal.EntretienId = this.EntretienModal.id;
-    this.templatemodal.id=Number( this.Templateid);
+    this.templatemodal.id = Number(this.Templateid);
     if (this.TemplateMode == true) {
       this.TemplateService.Update(
         this.Templateid.toString(),
@@ -284,93 +271,91 @@ this.EntretienModal.candidatId=Number(this.id);
       this.GetListEntretien(Number(this.id));
     } else {
       this.TemplateService.Add(this.templatemodal).subscribe((data) => {
-        this.ListTemplate.push(data);
+        // this.ListTemplate.push(data);
       });
       this.templatemodal = new Template();
       this.GetListEntretien(Number(this.id));
     }
   }
-/*
-  AddNoter() {
-    this.NoterService.Add(this.NoteModal).subscribe((data) => {
-      this.EntretienModal.NoterId = Number(data.id);
+
+  AddNoter( ): any {
+    let result;
+    this.NotesService.Add(this.NoteModal).subscribe((data) => {
+      result = Object.values(data);
+    });
+    return result;
+  }
+  EditNoter() {
+    this.NotesService.Update(
+      this.NoteModal.id.toString(),
+      this.NoteModal
+    ).subscribe((data) => {
       console.log(data.id);
     });
   }
-  EditNoter(){
-    this.NoterService.Update(this.NoteModal.id.toString(), this.NoteModal).subscribe((data) => {
-      this.EntretienModal.NoterId = Number(data.id);
-      console.log(data.id);
+
+  editEntretien(id: Number) {
+    this.EntretienModal.id = Number(id);
+    //this.GetEntretien(id);
+    console.log(
+      'tttttttttttttttttttttttttttttttttttttttt' +
+        Object.values(this.EntretienModal)
+    );
+
+    this.EntretienService.Update(
+      this.EntretienModal.id.toString(),
+      this.EntretienModal
+    ).subscribe((data) => {
+      this.templatemodal.EntretienId = data.id;
+      this.EntretienModal = data;
+    });
+
+    // this.GetEntretien(id);
+  }
+  setdeleteEntretien(id: Number) {
+    this.deleteEntretienid = Number(id);
+  }
+
+  deleteEntretien() {
+    this.EntretienService.Delete(this.deleteEntretienid).subscribe((data) => {
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Votre candidature a été mise à jour',
+        showConfirmButton: false,
+        timer: 1500,
+      });
     });
   }
-*/
-editEntretien(id:Number){
-  this.EntretienModal.id=Number(id);
-  //this.GetEntretien(id);
-  console.log("tttttttttttttttttttttttttttttttttttttttt"+Object.values(this.EntretienModal) );
-  
-  this.EntretienService.Update(
-    this.EntretienModal.id.toString(),
-    this.EntretienModal
-  ).subscribe((data) => {
-    this.templatemodal.EntretienId = data.id;
-    this.EntretienModal = data;
-
-  });
-
- // this.GetEntretien(id);
-
-
-
-}
-setdeleteEntretien(id:Number){
-  this.deleteEntretienid =Number(id);
-}
-
-deleteEntretien(){
-  this.EntretienService.Delete(this.deleteEntretienid).subscribe(data=>{
-    Swal.fire({
-      position: 'top-end',
-      icon: 'success',
-      title: 'Votre candidature a été mise à jour',
-      showConfirmButton: false,
-      timer: 1500,
-    });
-  })
-
-}
 
   AddEntretien() {
-      if(this.EntretienModal.dateEntretien==null || this.EntretienModal.evaluateur==null){
-        this.toastEvokeService.warning("error !",'remplir les champs obligatoires');
-        return null;
-      }
-      this.EntretienModal.candidatId = Number(this.id);
-      this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
-        this.templatemodal.EntretienId = data.id;
-        this.EntretienModal = data;
-        this.templatemodal = new Template();
-        this.EvMode = true;
-      });
-  }
-
-  GetNote(id:any):any{
-    let note;
-    this.notesService.findNoteByTemplate(id).subscribe(data=>{
-      debugger;
-      note= data.Note;
-      if(note==null){
-        note=0;
-      }
-    })
-    return note;
-
+    if (
+      this.EntretienModal.dateEntretien == null ||
+      this.EntretienModal.evaluateur == null
+    ) {
+      this.toastEvokeService.warning(
+        'error !',
+        'remplir les champs obligatoires'
+      );
+      return null;
+    }
+    this.EntretienModal.candidatId = Number(this.id);
+    this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
+      this.templatemodal.EntretienId = data.id;
+      this.EntretienModal = data;
+      this.templatemodal = new Template();
+      this.EvMode = true;
+    });
+    this.ListEntretien=[];
+    debugger;
+    console.log(this.ListEntretien);
+    
+    this.GetListEntretien(Number(this.id));
   }
 
   EditTemplate(id: Number) {
     this.TemplateMode = true;
     this.TemplateService.Get(Number(id)).subscribe((data) => {
-     
       this.templatemodal.title = data.title;
       this.templatemodal.technologie = data.technologie;
       this.templatemodal.them = data.them;
@@ -383,26 +368,41 @@ deleteEntretien(){
       // this.ListTemplate=[];
     });
     this.GetListEntretien(Number(this.id));
-  
   }
 
-  AjouteNotes(TemplateId:Number){
-    this.NoteModal.TemplateId=Number(TemplateId);
-    this.NotesService.Add(this.NoteModal).subscribe(data=>{
-    });
-    this.NoteModal=new Notes();
+  addNoteTemplate(id: number) {
+    let note = this.AddNoter();
+    //  this.TemplateService.Update()
   }
 
-  editNotes(NoteId:Number){
-    this.NoteModal.Note
+  editNotes(NoteId: Number) {
+    this.NoteModal.note;
     //this.NoteModal.TemplateId=Number(TemplateId);
-    this.NotesService.Add(this.NoteModal).subscribe(data=>{
-    });
-    this.NoteModal=new Notes();
+    this.NotesService.Add(this.NoteModal).subscribe((data) => {});
+    this.NoteModal = new Notes();
   }
 
-  setEntretienid(id:Number){
-   this.EntretienModal.id=Number(id);
-   this.GetEntretien(id);
+  setEntretienid(id: Number) {
+    this.EntretienModal.id = Number(id);
+    this.GetEntretien(id);
+  }
+
+  updateNote(data: any) {
+    debugger;
+   if(data!=null){
+
+   }
+    let note = new TemplateDTO();
+    note.NotesId = Number(this.NoteModal.note);
+   // this.TemplateService.UpdateNote(id, note).subscribe();
+    this.NoteModal.note = '';
+  }
+
+  GetNote(id:any):any{
+    let note ;
+    if(id==null) return note=0;
+this.notesService.Get(id).subscribe(data=>{
+  note=data.note;
+});
   }
 }

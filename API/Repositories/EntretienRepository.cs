@@ -11,7 +11,6 @@ namespace API_MySIRH.Repositories
 
         private readonly DataContext _context;
 
-
         public EntretienRepository(DataContext context)
         {
             this._context = context;
@@ -46,14 +45,18 @@ namespace API_MySIRH.Repositories
             this._context.Entry(Entretien).State = EntityState.Modified;
             await this._context.SaveChangesAsync();
         }
-
-
-
        public async Task<dynamic> GetEntretienByCandidat(int candidatid)
         {
             var Entretien = await this._context.Entretiens.Where(e=>e.CandidatId==candidatid).ToListAsync();
             if (Entretien is null) return null;
              Entretien.Select(async e => e.Templates = _context.Templates.Where(x => x.EntretienId == e.Id).ToList()).ToList();
+             Entretien.ForEach(async e =>
+            {
+                e.Templates.Select(async e => e.Note = await _context.Notes.FindAsync(e.NotesId)).ToList();
+            });
+
+
+            
             return Entretien;
 
         }

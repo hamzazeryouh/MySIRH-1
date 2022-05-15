@@ -14,12 +14,14 @@ namespace API_MySIRH.Services
     {
 
         private readonly ITemplateRepository _TemplateRepository;
+        private readonly INotesRepository _NotesRepository;
         private readonly IMapper _mapper;
 
-        public TemplateService(ITemplateRepository TemplateRepository, IMapper mapper)
+        public TemplateService(ITemplateRepository TemplateRepository, IMapper mapper, INotesRepository NotesRepository)
         {
             this._TemplateRepository = TemplateRepository;
             this._mapper = mapper;
+            this._NotesRepository = NotesRepository;
         }
 
         public async Task<TemplateDTO> AddTemplate(TemplateDTO Template)
@@ -38,14 +40,30 @@ namespace API_MySIRH.Services
             return this._mapper.Map<TemplateDTO>(await this._TemplateRepository.GetTemplate(id));
         }
 
-        public async Task<IEnumerable<TemplateDTO>> GetTemplates()
+        public async Task<IEnumerable<dynamic>> GetTemplates()
         {
             //var query = this._TemplateRepository.GetTemplates().ProjectTo<TemplateDTO>(_mapper.ConfigurationProvider).AsNoTracking();
             ////var mapping = this._mapper.Map<PagedList<Template>, PagedList<TemplateDTO>>(collabs);
             //return await PagedList<TemplateDTO>.CreateAsync(query, filterParams.pageNumber, filterParams.pageSize);
-
+           
             var result = await _TemplateRepository.GetTemplates();
-            return _mapper.Map<IEnumerable<Template>, IEnumerable<TemplateDTO>>(result);
+            foreach (var template in result)
+            {
+                if (template.NotesId is null)
+                {
+                    template.Note = null;
+                }
+                else
+                {
+                    template.Note = await _NotesRepository.GetNote(template.NotesId.Value);
+                }
+
+            }
+
+            // _mapper.Map<IEnumerable<Template>, IEnumerable<TemplateDTO>>(result);
+
+            // var note = await _NotesRepository.GetNote()
+            return result;
         }
 
         public async Task UpdateTemplate(int id, TemplateDTO Template)
@@ -54,9 +72,11 @@ namespace API_MySIRH.Services
         }
 
 
-        public async Task UpdateTemplateNote(int id, TemplateNoteDTO Template)
+        public async Task UpdateTemplateNote(int id, int Template)
         {
-            await this._TemplateRepository.UpdateTemplate(id, this._mapper.Map<Template>(Template));
+            var data =await _TemplateRepository.GetTemplate(id);
+            data.NotesId=Template;
+             await this._TemplateRepository.UpdateTemplate(id, data);
         }
     }
 }

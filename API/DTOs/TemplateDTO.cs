@@ -7,5 +7,7 @@
         public string? Title { get; set; }
         public int? EntretienId { get; set; }
         public int? NotesId { get; set; }
+
+        public NoteDTO? Notes { get; set; }
     }
 }

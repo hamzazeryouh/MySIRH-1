@@ -9,9 +9,8 @@ export interface INotes extends IBase {
   
 }
 export class Notes extends Base {
-  Commente:string;
-  Note:string;
-  TemplateId:number;
+  commente:string;
+  note:string;
 }
 
 

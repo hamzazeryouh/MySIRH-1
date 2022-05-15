@@ -444,12 +444,26 @@
                 </div>
                 <div class="container">
                   <div>
-                    <p class="h6">
+                    <p class="h6 my-2">
                       Liste de modèles :
                     </p>
                   </div>
-                  <div *ngIf="e.templates!==null">
+                  <div *ngIf="e.templates==0">
+                    <div class="border-1 shadow-sm my-3 ">
+                      <button data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"  *ngIf="EntretienModal.id==e.id"
+                      class=" btn btn-primary float-end mx-1 m-2" data-toggle="tooltip" data-placement="top"
+                      title="ajouter un nouveau Template">
+                      <i class="bi bi-plus-lg"></i>
+                    </button>
+                      <div class="row h-25">
+             
+                        <p class="p-3 h4 text-center text-danger">Liste de modèles vide </p> 
+                      </div>
+
+                    </div>
+                  </div>
                     <div class="border-1 shadow-sm my-3 " *ngFor="let item of e.templates">
+                     
                       <div class="row p-3">
                         <div class="col ">
                           <span class="h6 p-1">Technologie : </span> {{item.technologie}}
@@ -461,7 +475,16 @@
                           <span class="h6 p-1">Titre : </span> {{item.title}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1">note : </span> 
+                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id">note : {{GetNote(item.notesId) ?? 0}} </span> 
+                        <form [formGroup]="formNote"  *ngIf="EntretienModal.id==e.id">
+                          <ngx-star-rating
+                            class="stare"
+                            [(ngModel)]="NoteModal.note"
+                            formControlName="rating"
+                            (change)="updateNote(item.note)"
+                            [id]="'rating'"
+                          ></ngx-star-rating>
+                        </form>
                         </div>
                         <div class="col" *ngIf="EntretienModal.id==e.id">
                           <button *ngIf="TemplateMode==true" data-bs-toggle="modal"
@@ -484,28 +507,35 @@
                       </div>
 
                     </div>
-                  </div>
-                  <div *ngIf="e.templates===null">
-                    <div class="border-1 shadow-sm my-3 " *ngFor="let item of e.templates">
-                      <div class="row p-3">
-                        Liste de modèles vide 
+                 
+
+                  <div class="row container " *ngIf="EntretienModal.id==e.id">
+                    <div class="col ">
+                      <div class="form-outline mx">
+                        <label class="form-label h6" for="prenom">Commenter :</label>
+                        <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="EntretienModal.commente"
+                          (viewMode)="true">
+                        </angular-editor>
                       </div>
-
                     </div>
                   </div>
-                </div>
 
-                <div class="row container " *ngIf="EntretienModal.id==e.id">
-                  <div class="col ">
-                    <div class="form-outline mx">
-                      <label class="form-label h6" for="prenom">Commenter :</label>
-                      <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="EntretienModal.commente"
-                        (viewMode)="true">
-                      </angular-editor>
+                  <div class="row container py-3" *ngIf="EntretienModal.id!=e.id">
+                    <div class="col ">
+                      <div class="form-outline mx">
+                        <label class="form-label h6" for="prenom">Commenter :</label>
+                        <angular-editor [placeholder]="'Enter text here...'"
+                        [(ngModel)]="e.commente"
+                          >
+                        </angular-editor>
+                      </div>
                     </div>
                   </div>
+  
+                
                 </div>
 
+               
                 <div class="row container " *ngIf="EntretienModal.id==e.id">
                   <div class="col p-3 ">
                     <button
@@ -630,7 +660,7 @@
                 <div class="col">
                   <div class="form-outline mx">
                     <label class="form-label" for="prenom">Commenter :</label>
-                    <angular-editor [placeholder]="'Enter text here...'" [(ngModel)]="NoteModal.Commente">
+                    <angular-editor class="h-25" [placeholder]="'Enter text here...'" [(ngModel)]="NoteModal.commente">
                     </angular-editor>
                   </div>
                 </div>

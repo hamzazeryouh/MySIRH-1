@@ -1,7 +1,7 @@
 ﻿namespace API_MySIRH.DTOs
 {
-    public class TemplateNoteDTO : DtoBase
+    public class TemplateNoteDTO 
     {
-        public int? NotesId { get; set; }
+        public int NotesId { get; set; }
     }
 }

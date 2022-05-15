@@ -1,3 +1,4 @@
+import { ColumnFreezeContentRenderer } from "@syncfusion/ej2-angular-grids";
 import { Base, IBase } from "./Base.model";
 
 
@@ -17,8 +18,12 @@ export class Template extends Base {
       them:string;
       title :string;
       EntretienId:Number;
-      NotesId :Number;
   
+}
+
+
+export class TemplateDTO extends Base{
+  NotesId:Number;
 }
 
 

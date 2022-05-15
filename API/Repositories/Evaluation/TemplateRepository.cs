@@ -41,6 +41,7 @@ namespace API_MySIRH.Repositories
 
         public async Task<IEnumerable<Template>> GetTemplates()
         {
+
             return await this._context.Templates.ToListAsync();
         }
 

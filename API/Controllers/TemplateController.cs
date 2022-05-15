@@ -56,15 +56,12 @@ namespace API_MySIRH.Controllers
         }
 
         [HttpPut("Note/{id}")]
-        public async Task<ActionResult<TemplateDTO>> UpdateTemplateNote(int id, TemplateNoteDTO TemplateDTO)
+        public async Task<ActionResult<TemplateDTO>> UpdateTemplateNote(int id, TemplateDTO TemplateDTO)
         {
-            if (id != TemplateDTO.Id)
-            {
-                return BadRequest();
-            }
             try
             {
-                await this._TemplateService.UpdateTemplateNote(id, TemplateDTO);
+
+                await this._TemplateService.UpdateTemplateNote(id, TemplateDTO.NotesId.Value);
             }
             catch
             {
