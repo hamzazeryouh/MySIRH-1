@@ -481,7 +481,7 @@
                             class="stare"
                             [(ngModel)]="NoteModal.note"
                             formControlName="rating"
-                            (change)="updateNote(item.note)"
+                            (change)="updateNote(item.id,item.note)"
                             [id]="'rating'"
                           ></ngx-star-rating>
                         </form>
@@ -531,11 +531,7 @@
                       </div>
                     </div>
                   </div>
-  
-                
                 </div>
-
-               
                 <div class="row container " *ngIf="EntretienModal.id==e.id">
                   <div class="col p-3 ">
                     <button
@@ -553,13 +549,7 @@
                     Annuler
                   </button>
                   </div>
-
                 </div>
-
-
-
-
-
               </div>
             </ng-template>
           </li>

@@ -22,6 +22,7 @@ import { notesService } from 'src/app/services/notes.service';
 import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 import { TextSearchColorSettings } from '@syncfusion/ej2-angular-pdfviewer';
+import { throws } from 'assert';
 
 @Component({
   selector: 'app-add-edit-candidat',
@@ -48,7 +49,7 @@ export class AddEditCandidatComponent implements OnInit {
   pdfSrc = '';
   Ev: Entretien = new Entretien();
   EvMode = false;
-  ListEntretien: any;
+  ListEntretien: any[];
   CandidatId: 0;
   //begin from  Entretien
   EntretienEdit: Number;
@@ -246,7 +247,7 @@ export class AddEditCandidatComponent implements OnInit {
   }
   GetListEntretien(id: number) {
     this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
-      this.ListEntretien = null;
+      this.ListEntretien = [];
       this.ListEntretien =Object.values(data) ;
       console.log(data);
     });
@@ -277,30 +278,10 @@ export class AddEditCandidatComponent implements OnInit {
       this.GetListEntretien(Number(this.id));
     }
   }
-
-  AddNoter( ): any {
-    let result;
-    this.NotesService.Add(this.NoteModal).subscribe((data) => {
-      result = Object.values(data);
-    });
-    return result;
-  }
-  EditNoter() {
-    this.NotesService.Update(
-      this.NoteModal.id.toString(),
-      this.NoteModal
-    ).subscribe((data) => {
-      console.log(data.id);
-    });
-  }
-
   editEntretien(id: Number) {
     this.EntretienModal.id = Number(id);
     //this.GetEntretien(id);
-    console.log(
-      'tttttttttttttttttttttttttttttttttttttttt' +
-        Object.values(this.EntretienModal)
-    );
+   
 
     this.EntretienService.Update(
       this.EntretienModal.id.toString(),
@@ -343,14 +324,11 @@ export class AddEditCandidatComponent implements OnInit {
     this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
       this.templatemodal.EntretienId = data.id;
       this.EntretienModal = data;
+      this.ListEntretien.push(data);
       this.templatemodal = new Template();
       this.EvMode = true;
+      this.EntretienModal=new Entretien();
     });
-    this.ListEntretien=[];
-    debugger;
-    console.log(this.ListEntretien);
-    
-    this.GetListEntretien(Number(this.id));
   }
 
   EditTemplate(id: Number) {
@@ -370,11 +348,6 @@ export class AddEditCandidatComponent implements OnInit {
     this.GetListEntretien(Number(this.id));
   }
 
-  addNoteTemplate(id: number) {
-    let note = this.AddNoter();
-    //  this.TemplateService.Update()
-  }
-
   editNotes(NoteId: Number) {
     this.NoteModal.note;
     //this.NoteModal.TemplateId=Number(TemplateId);
@@ -387,22 +360,34 @@ export class AddEditCandidatComponent implements OnInit {
     this.GetEntretien(id);
   }
 
-  updateNote(data: any) {
+  updateNote(id:any, data: any) {
     debugger;
    if(data!=null){
 
    }
+   if(this.NoteModal.commente==null){
+    this.NoteModal.commente='';
+   }
+  
+this.NoteModal.id=0;
+this.NoteModal.creationDate='';
+this.NoteModal.modificationDate='';
+
+
+   this.NotesService.Add(this.NoteModal).subscribe(data=>{
     let note = new TemplateDTO();
-    note.NotesId = Number(this.NoteModal.note);
-   // this.TemplateService.UpdateNote(id, note).subscribe();
+    note.NotesId = Number(data.id);
+    this.TemplateService.UpdateNote(id, note).subscribe();
     this.NoteModal.note = '';
+   });
+    
   }
 
   GetNote(id:any):any{
     let note ;
     if(id==null) return note=0;
-this.notesService.Get(id).subscribe(data=>{
-  note=data.note;
-});
+    this.notesService.Get(id).subscribe(data=>{
+      note=data.note;
+    });
   }
 }
