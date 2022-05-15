@@ -472,27 +472,22 @@
                           <span class="h6 p-1">Theme : </span> {{item.them}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1">Titre : </span> {{item.title}}
+                          <span class="h6 p-1"> {{item.id}}  Titre : </span> {{item.title}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id">note : {{GetNote(item.notesId) ?? 0}} </span> 
+                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id">{{item.id}}  note : {{item.noteValue ?? 0}} </span> 
                         <form [formGroup]="formNote"  *ngIf="EntretienModal.id==e.id">
                           <ngx-star-rating
                             class="stare"
                             [(ngModel)]="NoteModal.note"
                             formControlName="rating"
-                            (change)="updateNote(item.id,item.note)"
+                            (change)="updateNote(item.id)"
                             [id]="'rating'"
                           ></ngx-star-rating>
                         </form>
                         </div>
                         <div class="col" *ngIf="EntretienModal.id==e.id">
-                          <button *ngIf="TemplateMode==true" data-bs-toggle="modal"
-                            data-bs-target="#addnewCommenterModal" aria-label="add"
-                            class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top"
-                            title="ajouter un nouveau Commentaire">
-                            <i class="bi bi-plus-lg"></i>
-                          </button>
+
                           <button data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"
                             class=" btn btn-primary float-end mx-1" data-toggle="tooltip" data-placement="top"
                             title="ajouter un nouveau Template">
@@ -503,6 +498,13 @@
                             data-toggle="tooltip" data-placement="top" title="edit Template">
                             <i class="bi bi-pencil-square"></i>
                           </button>
+
+                          <button *ngIf="TemplateMode==true" data-bs-toggle="modal"
+                          data-bs-target="#addnewCommenterModal" aria-label="add"
+                          class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top"
+                          title="ajouter un nouveau Commentaire">
+                          <i class="bi bi-plus-lg"></i>
+                        </button>
                         </div>
                       </div>
 

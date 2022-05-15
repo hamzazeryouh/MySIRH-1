@@ -252,17 +252,17 @@
       
         </table>
 
-        <table class="table my-1" *ngFor="let candidat of Candidat$ | async | filter: search">
+        <table class="table my-1 py-3" *ngFor="let candidat of Candidat$ | async | filter: search">
            
             <thead
-            class=" my-2 mb-2 shadow-sm my-2 table-hover bg-body rounded align-baseline"
+            class=" my-2 mb-2 shadow-sm  table-hover bg-body rounded align-baseline"
           >
             <tr
               (dblclick)="Get(candidat.id)"
               class="shadow-sm my-2 bg-body align-baseline"
               id="{{ candidat.id }}"
             >
-            <td class="h-full bg-success" style="width: 3px; ;">
+            <td class="h-full bg-success" style="width: 1px; ;">
 
             </td>
   

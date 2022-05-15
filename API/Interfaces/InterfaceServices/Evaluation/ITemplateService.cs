@@ -17,5 +17,7 @@ namespace API_MySIRH.Interfaces
 
         Task UpdateTemplateNote(int id, int Template);
 
+        Task UpdateTemplatecommenter(int id, string commenter);
+
     }
 }

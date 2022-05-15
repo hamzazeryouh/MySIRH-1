@@ -9,7 +9,8 @@ namespace API_MySIRH.Entities
         public string? Title { get; set; }
         public int? EntretienId { get; set; }
         public Entretien? Entretien { get; set; }
-
+        public   int? NoteValue   {get; set; }
+        public string? Commenter { get; set; }
         public int? NotesId { get; set; } = null;
         public Notes? Note { get; set; } = null;
     }

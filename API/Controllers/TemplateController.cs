@@ -72,6 +72,23 @@ namespace API_MySIRH.Controllers
         }
 
 
+        [HttpPut("Commente/{id}")]
+        public async Task<ActionResult<TemplateDTO>> UpdateTemplateCommente(int id, string TemplateDTO)
+        {
+            try
+            {
+
+                await this._TemplateService.UpdateTemplatecommenter(id, TemplateDTO);
+            }
+            catch
+            {
+                throw;
+            }
+
+            return NoContent();
+        }
+
+
 
 
 

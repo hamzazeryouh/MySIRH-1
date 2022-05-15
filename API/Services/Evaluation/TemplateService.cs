@@ -75,8 +75,15 @@ namespace API_MySIRH.Services
         public async Task UpdateTemplateNote(int id, int Template)
         {
             var data =await _TemplateRepository.GetTemplate(id);
-            data.NotesId=Template;
+            data.NoteValue=Template;
              await this._TemplateRepository.UpdateTemplate(id, data);
+        }
+
+        public async Task UpdateTemplatecommenter(int id, string commenter)
+        {
+            var data = await _TemplateRepository.GetTemplate(id);
+            data.Commenter = commenter;
+            await this._TemplateRepository.UpdateTemplate(id, data);
         }
     }
 }
