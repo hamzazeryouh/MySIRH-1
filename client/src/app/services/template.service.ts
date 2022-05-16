@@ -22,8 +22,7 @@ export class TemplateService extends BaseService<Template,number> {
    }
 
 
-   UpdateCommente(id: string,commente: string){
-    
-    return this.http.put(`${TemplateService.endPoint}/Commente/${id}`, commente);
+   UpdateCommente(id: string,TemplateDTO: string){
+    return this.http.put(`${TemplateService.endPoint}/Commente/${id}`, TemplateDTO);
    }
 }

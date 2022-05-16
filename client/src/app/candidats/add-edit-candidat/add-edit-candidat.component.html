@@ -472,10 +472,10 @@
                           <span class="h6 p-1">Theme : </span> {{item.them}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1"> {{item.id}}  Titre : </span> {{item.title}}
+                          <span class="h6 p-1"> Titre : </span> {{item.title}}
                         </div>
                         <div class="col">
-                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id">{{item.id}}  note : {{item.noteValue ?? 0}} </span> 
+                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id"> note : {{item.noteValue ?? 0}} </span> 
                         <form [formGroup]="formNote"  *ngIf="EntretienModal.id==e.id">
                           <ngx-star-rating
                             class="stare"
