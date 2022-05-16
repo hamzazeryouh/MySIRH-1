@@ -360,13 +360,16 @@ export class AddEditCandidatComponent implements OnInit {
     this.GetEntretien(id);
   }
 
-  updateNote(id:any) {
-    console.log("id---------------------" +id);
-    
+  updateNote(id:any) {   
    let note = new TemplateDTO();
    note.NotesId=Number(this.NoteModal.note) ;
    this.TemplateService.UpdateNote(id, note).subscribe();
    this.NoteModal.note = '';
+  }
+
+  updateCommente(id:any) {
+   this.TemplateService.UpdateCommente(id,this.NoteModal.commente.toString()).subscribe();
+   this.NoteModal.commente = '';
   }
 
   GetNote(id:any):any{

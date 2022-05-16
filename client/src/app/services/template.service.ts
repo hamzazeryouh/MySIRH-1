@@ -20,4 +20,9 @@ export class TemplateService extends BaseService<Template,number> {
     
     return this.http.put<TemplateDTO>(`${TemplateService.endPoint}/Note/${id}`, body);
    }
+
+
+   UpdateCommente(id: string,TemplateDTO: string){
+    return this.http.put(`${TemplateService.endPoint}/Commente/${id}`, TemplateDTO);
+   }
 }
