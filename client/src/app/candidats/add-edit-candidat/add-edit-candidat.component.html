@@ -21,10 +21,10 @@
       <div class="container d-flex justify-content-center h-100 bg-white">
         <div class="d-flex flex-column">
           <div class="">
-            <P class="pt-3 text-center h2" *ngIf="Civilite == null">{{ Nom }} {{ Prenom }}</P>
-            <P class="pt-3 text-center h2" *ngIf="Civilite == 'H'">Mr.{{ Nom }} {{ Prenom }}</P>
+            <P class="pt-3 text-center h2" *ngIf="Civilite == null">{{ (Nom?.length?.toString())? (Nom | slice:0:6)+'..':(Nom)  }} {{ (Prenom?.length?.toString())? (Prenom | slice:0:6)+'..':(Prenom)  }} </P>
+            <P class="pt-3 text-center h2" *ngIf="Civilite == 'H'">Mr.{{ (Nom?.length?.toString())? (Nom | slice:0:6)+'..':(Nom)  }} {{ (Prenom?.length?.toString())? (Prenom | slice:0:6)+'..':(Prenom)  }}</P>
             <P class="pt-3 text-center h2" *ngIf="Civilite == 'F'">
-              Mms. {{ Nom }} {{ Prenom }}</P>
+              Mms. {{ (Nom?.length?.toString())? (Nom | slice:0:6)+'..':(Nom)  }} {{ (Prenom?.length?.toString())? (Prenom | slice:0:6)+'..':(Prenom)  }}</P>
           </div>
 
           <div>
@@ -33,16 +33,17 @@
               </Kt-upload-image>
             </div>
             <div *ngIf="Civilite == 'H' && mode == false" [id]="modal.id" class="col image border-dark">
-              <Kt-upload-image class="w-25" [id]="modal.id" src="../../../assets/images/manprofile.png">
+              <Kt-upload-image class="" [id]="modal.id" src="../../../assets/images/manprofile.png">
               </Kt-upload-image>
             </div>
             <div *ngIf="Civilite == 'F' && mode == false" [id]="modal.id" class="col image border-dark">
-              <Kt-upload-image class="w-25" [id]="modal.id" src="../../../assets/images/womanprofile.jpg">
+              <Kt-upload-image class="" [id]="modal.id" src="../../../assets/images/womanprofile.jpg">
               </Kt-upload-image>
             </div>
-            <div *ngIf="mode == true" class="col image border-dark">
-              <Kt-upload-image class="w-25 h-25" [id]="modal.id" src="{{ endPoint }}/GetFile/{{ modal.imageUrl }}">
+            <div *ngIf="mode == true" class="col card-img-top rounded-circle image border-dark">
+              <Kt-upload-image class="" [id]="modal.id" src="{{ endPoint }}/GetFile/{{ modal.imageUrl }}">
               </Kt-upload-image>
+
             </div>
           </div>
 
@@ -61,13 +62,13 @@
                 Proposition salariale : {{ modal.propositionSalariale }}
               </p>
               <p class="pb-1">
-                Residence actuelle : {{ modal.residenceActuelle }}
+                Residence actuelle : {{ (modal.residenceActuelle?.length?.toString())? (modal.emploiEncore | slice:0:15)+'..':(modal.emploiEncore)  }}
               </p>
-              <p class="pb-1">Emploi Encore : {{ modal.emploiEncore }}</p>
+              <p class="pb-1">Emploi Encore : {{ (modal.emploiEncore?.length?.toString())? (modal.emploiEncore | slice:0:15)+'..':(modal.emploiEncore)  }} </p> 
               <p *ngIf="mode == true" class="pb-1">Poste : {{ Poste }}</p>
               <p *ngIf="mode == true" class="pb-1">Niveau : {{ Niveau }}</p>
 
-              <p class="pb-1">Commentaire : {{ modal.commentaire }}</p>
+              <p class="pb-1">Commentaire :{{ (modal.residenceActuelle?.length?.toString())? (modal.emploiEncore | slice:0:50)+'..':(modal.emploiEncore)  }}</p>
             </div>
           </div>
         </div>
@@ -89,7 +90,7 @@
                       <label class="form-label" for="civilite">Civilité :</label>
                       <select [(ngModel)]="Civilite" [formControlName]="'civilite'" class="form-select border"
                         name="civilite" aria-label="Default select example">
-                        <option value="none" [selected]="true">
+                        <option value="none" selected="true">
                           Sélectionner
                         </option>
                         <option value="H">Mr.</option>
@@ -435,7 +436,7 @@
                         <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                           <li><a
                               class="dropdown-item" (click)="setEntretienid(e.id)" >Edit</a></li>
-                              <li><a data-bs-toggle="modal" (click)="setdeleteEntretien(e.id)" data-bs-target="#deleteentretienModal" aria-label="add"
+                              <li *ngIf="e.templates==0" ><a data-bs-toggle="modal" (click)="setdeleteEntretien(e.id)" data-bs-target="#deleteentretienModal" aria-label="add"
                                 class="dropdown-item">Delete</a></li>
                         </ul>
                       </div>
@@ -444,9 +445,20 @@
                 </div>
                 <div class="container">
                   <div>
-                    <p class="h6 my-2">
-                      Liste de modèles :
-                    </p>
+                    <div class="row ${1| ,row-cols-2,row-cols-3, auto,justify-content-md-center,|}">
+                      <p class="h6 my-2">
+                        Liste de modèles :
+                      </p>
+                      <div class="w-30 float-end">
+                        <button  *ngIf="EntretienModal.id==e.id"  data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"
+                        class=" btn btn-primary float-end mx-1" data-toggle="tooltip" data-placement="top"
+                        title="ajouter un nouveau Template">
+                        <i class="bi bi-plus-lg"></i>
+                      </button>
+                      </div>
+
+                    </div>
+                  
                   </div>
                   <div *ngIf="e.templates==0">
                     <div class="border-1 shadow-sm my-3 ">
@@ -474,10 +486,11 @@
                         <div class="col">
                           <span class="h6 p-1"> Titre : </span> {{item.title}}
                         </div>
-                        <div class="col">
-                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id"> note : {{item.noteValue ?? 0}} </span> 
-                        <form [formGroup]="formNote"  *ngIf="EntretienModal.id==e.id">
-                          <ngx-star-rating
+                        <div class="col-md">
+                          <span class="h6 p-1"  *ngIf="EntretienModal.id!=e.id"> note : {{item.noteValue ?? 0}} </span>         
+                       <!--
+                        <form class="mb-2" [formGroup]="formNote"  *ngIf="EntretienModal.id==e.id">
+                          <ngx-star-rating 
                             class="stare"
                             [(ngModel)]="NoteModal.note"
                             formControlName="rating"
@@ -485,33 +498,34 @@
                             [id]="'rating'"
                           ></ngx-star-rating>
                         </form>
+                       --> 
+                       <label for="note" class="h6 p-1" *ngIf="EntretienModal.id==e.id" >Note :</label>
+                       <input type="number"  value="{{item.noteValue}}" *ngIf="EntretienModal.id==e.id" name="NoteModal.note"  (change)="updateNote(item.id,$event)" >
                         </div>
+                        <div class="col-sm">                          <i class="bi bi-chat-square-dots mx-2 table-hover" 
+                          (click)="setCommente(item.id,item.commenter)"
+                          data-bs-toggle="modal" data-bs-target="#addnewCommenterModal" aria-label="add"
+                          >
+                        </i></div>
                         <div class="col" *ngIf="EntretienModal.id==e.id">
-
-                          <button data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"
-                            class=" btn btn-primary float-end mx-1" data-toggle="tooltip" data-placement="top"
-                            title="ajouter un nouveau Template">
-                            <i class="bi bi-plus-lg"></i>
-                          </button>
                           <button data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"
                             (click)="EditTemplate(item.id)" class=" btn btn-success float-end mx-1"
                             data-toggle="tooltip" data-placement="top" title="edit Template">
                             <i class="bi bi-pencil-square"></i>
                           </button>
-
-                          <button *ngIf="TemplateMode==true" data-bs-toggle="modal"
-                          data-bs-target="#addnewCommenterModal" aria-label="add"
-                          class=" btn btn-success float-end mx-1" data-toggle="tooltip" data-placement="top"
-                          title="ajouter un nouveau Commentaire">
-                          <i class="bi bi-plus-lg"></i>
+                          <button data-bs-toggle="modal" data-bs-target="#addnewTemplateModal" aria-label="add"
+                          (click)="deleteTemplate(item.id)" class=" btn btn-danger float-end mx-1"
+                          data-toggle="tooltip" data-placement="top" title="delete Template">
+                          <i class="bi bi-trash"></i>
                         </button>
+
                         </div>
                       </div>
 
                     </div>
                  
 
-                  <div class="row container " *ngIf="EntretienModal.id==e.id">
+                  <div class="row pb-2 " *ngIf="EntretienModal.id==e.id">
                     <div class="col ">
                       <div class="form-outline mx">
                         <label class="form-label h6" for="prenom">Commenter :</label>
@@ -522,9 +536,9 @@
                     </div>
                   </div>
 
-                  <div class="row container py-3" *ngIf="EntretienModal.id!=e.id">
+                  <div class="row pb-2 " *ngIf="EntretienModal.id!=e.id">
                     <div class="col ">
-                      <div class="form-outline mx">
+                      <div class="form-outline">
                         <label class="form-label h6" for="prenom">Commenter :</label>
                         <angular-editor [placeholder]="'Enter text here...'"
                         [(ngModel)]="e.commente"
@@ -661,12 +675,12 @@
           </div>
           <!--end modal body -->
         </div>
-        <div class="modal-footer">
+        <div class="modal-footer" *ngIf="EntretienModal.id!=null" >
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
             Close
           </button>
 
-          <button (click)="addTemplate()" type="button" class="btn btn-primary">
+          <button (click)="updateCommente()" type="button" class="btn btn-primary">
             valider
           </button>
         </div>

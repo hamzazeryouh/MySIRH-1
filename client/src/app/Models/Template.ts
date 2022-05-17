@@ -26,6 +26,10 @@ export class TemplateDTO extends Base{
   NotesId:Number;
 }
 
+export class Templatecommente extends Base{
+  Commente:string;
+}
+
 
 
 

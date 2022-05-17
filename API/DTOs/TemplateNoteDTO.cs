@@ -4,4 +4,10 @@
     {
         public int NotesId { get; set; }
     }
+
+
+    public class TemplatecommenteDTO
+    {
+        public string Commente { get; set; }
+    }
 }

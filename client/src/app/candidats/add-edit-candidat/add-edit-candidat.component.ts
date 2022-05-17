@@ -21,8 +21,9 @@ import { Notes } from 'src/app/Models/notes';
 import { notesService } from 'src/app/services/notes.service';
 import { ToastEvokeService } from '@costlydeveloper/ngx-awesome-popup';
 import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
-import { TextSearchColorSettings } from '@syncfusion/ej2-angular-pdfviewer';
+import { TextSearchColorSettings, ThumbnailViewService } from '@syncfusion/ej2-angular-pdfviewer';
 import { throws } from 'assert';
+import { stringHelper } from 'src/app/helpers/string.helper';
 
 @Component({
   selector: 'app-add-edit-candidat',
@@ -33,6 +34,7 @@ export class AddEditCandidatComponent implements OnInit {
   modal: Candidat = new Candidat();
 
   Civilite?: string | null;
+
   Nom: string | null;
   Prenom!: string | null;
   Poste!: any;
@@ -42,6 +44,7 @@ export class AddEditCandidatComponent implements OnInit {
   mode = false;
   submitted = false;
   postes!: any[];
+ array: any[]=[];
   posteNiveau!: any[];
   id: Number;
   iditem: number;
@@ -246,10 +249,11 @@ export class AddEditCandidatComponent implements OnInit {
     });
   }
   GetListEntretien(id: number) {
+    
     this.EntretienService.GetEntretienByCandidat(id).subscribe((data) => {
-      this.ListEntretien = [];
+      
       this.ListEntretien =Object.values(data) ;
-      console.log(data);
+
     });
   }
 
@@ -276,6 +280,7 @@ export class AddEditCandidatComponent implements OnInit {
       });
       this.templatemodal = new Template();
       this.GetListEntretien(Number(this.id));
+
     }
   }
   editEntretien(id: Number) {
@@ -291,7 +296,9 @@ export class AddEditCandidatComponent implements OnInit {
       this.EntretienModal = data;
     });
 
-    // this.GetEntretien(id);
+    this.ngOnInit();
+    this.GetListEntretien(Number(this.id));
+    this.EntretienModal.id =0;
   }
   setdeleteEntretien(id: Number) {
     this.deleteEntretienid = Number(id);
@@ -307,6 +314,8 @@ export class AddEditCandidatComponent implements OnInit {
         timer: 1500,
       });
     });
+    this.ngOnInit();
+    this.GetListEntretien(Number(this.id));
   }
 
   AddEntretien() {
@@ -324,11 +333,12 @@ export class AddEditCandidatComponent implements OnInit {
     this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
       this.templatemodal.EntretienId = data.id;
       this.EntretienModal = data;
-      this.ListEntretien.push(data);
       this.templatemodal = new Template();
       this.EvMode = true;
       this.EntretienModal=new Entretien();
     });
+    this.ngOnInit();
+    this.GetListEntretien(Number(this.id));
   }
 
   EditTemplate(id: Number) {
@@ -339,44 +349,51 @@ export class AddEditCandidatComponent implements OnInit {
       this.templatemodal.them = data.them;
       this.Templateid = data.id;
     });
+    this.ngOnInit();
+    this.GetListEntretien(Number(this.id));
   }
 
   deleteTemplate(id: Number) {
     this.TemplateService.Delete(Number(id)).subscribe((data) => {
       // this.ListTemplate=[];
+      this.ngOnInit();
+      this.GetListEntretien(Number(this.id));
     });
-    this.GetListEntretien(Number(this.id));
-  }
 
-  editNotes(NoteId: Number) {
-    this.NoteModal.note;
-    //this.NoteModal.TemplateId=Number(TemplateId);
-    this.NotesService.Add(this.NoteModal).subscribe((data) => {});
-    this.NoteModal = new Notes();
   }
-
   setEntretienid(id: Number) {
     this.EntretienModal.id = Number(id);
     this.GetEntretien(id);
   }
 
-  updateNote(id:any) {   
+  updateNote(id:any,evant:any) {  
+  debugger;
    let note = new TemplateDTO();
-   note.NotesId=Number(this.NoteModal.note) ;
+   note.NotesId=Number(evant.target.value) ;
    this.TemplateService.UpdateNote(id, note).subscribe();
    this.NoteModal.note = '';
+   this.ngOnInit();
+   this.GetListEntretien(Number(this.id));
   }
 
-  updateCommente(id:any) {
-   this.TemplateService.UpdateCommente(id,this.NoteModal.commente.toString()).subscribe();
+  updateCommente() {
+   this.TemplateService.UpdateCommente(this.templatemodal.id.toString(),this.NoteModal.commente.toString()).subscribe();
    this.NoteModal.commente = '';
+   this.ngOnInit();
+   this.GetListEntretien(Number(this.id));
   }
 
-  GetNote(id:any):any{
-    let note ;
-    if(id==null) return note=0;
-    this.notesService.Get(id).subscribe(data=>{
-      note=data.note;
-    });
+  setCommente(id:any,commente:any){
+ this.templatemodal.id=id;
+
+ 
+    this.NoteModal.commente=commente;
+    console.log(this.NoteModal.commente);
+  }
+
+
+  ConvertToNumber(input:string):Number{
+    if(!input)return 0; 
+    return stringHelper.ConvertStringToNumber(input);
   }
 }

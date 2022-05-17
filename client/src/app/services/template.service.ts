@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { MDM } from '../Models/MDM';
-import { Template, TemplateDTO } from '../Models/Template';
+import { Template, Templatecommente, TemplateDTO } from '../Models/Template';
 import { BaseService } from './Base/base.service';
 
 @Injectable({
@@ -22,7 +22,10 @@ export class TemplateService extends BaseService<Template,number> {
    }
 
 
-   UpdateCommente(id: string,TemplateDTO: string){
-    return this.http.put(`${TemplateService.endPoint}/Commente/${id}`, TemplateDTO);
+   UpdateCommente(id: string,value: string){
+     debugger;
+    let body= new Templatecommente();
+    body.Commente=value;
+    return this.http.put(`${TemplateService.endPoint}/Commente/${id}`, body);
    }
 }
