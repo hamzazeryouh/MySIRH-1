@@ -333,6 +333,7 @@ export class AddEditCandidatComponent implements OnInit {
     this.EntretienService.Add(this.EntretienModal).subscribe((data) => {
       this.templatemodal.EntretienId = data.id;
       this.EntretienModal = data;
+      this.ListEntretien.push(data);
       this.templatemodal = new Template();
       this.EvMode = true;
       this.EntretienModal=new Entretien();
