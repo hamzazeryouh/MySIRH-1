@@ -73,12 +73,12 @@ namespace API_MySIRH.Controllers
 
 
         [HttpPut("Commente/{id}")]
-        public async Task<ActionResult<TemplateDTO>> UpdateTemplateCommente(int id, string TemplateDTO)
+        public async Task<ActionResult<TemplateDTO>> UpdateTemplateCommente(int id, TemplatecommenteDTO TemplateDTO)
         {
             try
             {
-
-                await this._TemplateService.UpdateTemplatecommenter(id, TemplateDTO);
+                var commente = TemplateDTO.Commente;
+                await this._TemplateService.UpdateTemplatecommenter(id, commente);
             }
             catch
             {
